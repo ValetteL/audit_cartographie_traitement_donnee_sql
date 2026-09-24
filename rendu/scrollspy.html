@@ -1,6 +1,29 @@
 <script>
 (function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll('#TOC a[href^="#"]'));
+  var toc = document.getElementById('TOC');
+  if (!toc) return;
+
+  // Wrap the pandoc-generated #TOC in a hover-reveal breadcrumb widget.
+  var wrapper = document.createElement('div');
+  wrapper.id = 'nav-fil-ariane';
+  var label = document.createElement('div');
+  label.id = 'breadcrumb-label';
+  label.innerHTML = '<span class="crumb-current">…</span>';
+
+  toc.parentNode.insertBefore(wrapper, toc);
+  wrapper.appendChild(label);
+  wrapper.appendChild(toc);
+
+  // Touch/click fallback: toggle open state (hover alone doesn't exist on touch).
+  label.addEventListener('click', function (e) {
+    e.stopPropagation();
+    wrapper.classList.toggle('is-open');
+  });
+  document.addEventListener('click', function (e) {
+    if (!wrapper.contains(e.target)) wrapper.classList.remove('is-open');
+  });
+
+  var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
   if (!links.length) return;
   var map = {};
   links.forEach(function (a) {
@@ -13,7 +36,10 @@
 
   function setActive(id) {
     links.forEach(function (a) { a.classList.remove('active'); });
-    if (map[id]) map[id].classList.add('active');
+    var a = map[id];
+    if (!a) return;
+    a.classList.add('active');
+    label.innerHTML = '<span class="crumb-current">' + a.textContent.trim() + '</span>';
   }
 
   var observer = new IntersectionObserver(function (entries) {
