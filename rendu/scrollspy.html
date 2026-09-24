@@ -1,0 +1,30 @@
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('#TOC a[href^="#"]'));
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) {
+    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+    var el = document.getElementById(id);
+    if (el) map[id] = a;
+  });
+  var sections = Object.keys(map).map(function (id) { return document.getElementById(id); });
+  if (!sections.length) return;
+
+  function setActive(id) {
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[id]) map[id].classList.add('active');
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    var visible = entries.filter(function (e) { return e.isIntersecting; });
+    if (visible.length) {
+      visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+      setActive(visible[0].target.id);
+    }
+  }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(function (el) { observer.observe(el); });
+  setActive(sections[0].id);
+})();
+</script>

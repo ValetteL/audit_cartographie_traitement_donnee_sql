@@ -1,43 +1,10 @@
 # 4. Modèle conceptuel (MCD)
 
-## Entités et attributs
+## Entités
 
-### COMMUNE
-Table de référence géographique, issue du COG, restreinte au département 44 (207 communes).
-
-- `code_insee` (identifiant)
-- `nom_commune`
-- `code_postal`
-- `epci_code`, `epci_nom`
-- `dep_code`, `dep_nom`
-- `reg_code`, `reg_nom`
-
-### TRANSACTION
-Une transaction immobilière (mutation DVF), rattachée à une commune.
-
-- `id_transaction` (identifiant)
-- `id_mutation`
-- `date_mutation`
-- `nature_mutation`
-- `valeur_fonciere`
-- `type_local`
-- `surface_reelle_bati`
-- `nombre_pieces_principales`
-- `surface_terrain`
-- `longitude`, `latitude`
-
-### DIAGNOSTIC_DPE
-Un diagnostic de performance énergétique, rattaché à une commune.
-
-- `numero_dpe` (identifiant)
-- `date_etablissement_dpe`
-- `etiquette_dpe`
-- `etiquette_ges`
-- `annee_construction`
-- `periode_construction`
-- `type_batiment`
-- `surface_habitable_logement`
-- `adresse`
+- **COMMUNE** — référentiel géographique (COG), restreint au département 44 (207 communes).
+- **TRANSACTION** — une transaction immobilière (mutation DVF), rattachée à une commune.
+- **DIAGNOSTIC_DPE** — un diagnostic de performance énergétique, rattaché à une commune.
 
 ## Relations et cardinalités
 
@@ -46,56 +13,15 @@ COMMUNE 1 ───── N TRANSACTION
 COMMUNE 1 ───── N DIAGNOSTIC_DPE
 ```
 
-- Une **commune** est concernée par **0 à N transactions** ; une **transaction** appartient à **exactement 1 commune**.
-- Une **commune** est concernée par **0 à N diagnostics DPE** ; un **diagnostic** porte sur **exactement 1 commune**.
+Une **commune** est concernée par **0 à N transactions** et **0 à N diagnostics DPE** ; chaque **transaction** et chaque **diagnostic** appartient à **exactement 1 commune**.
 
 ## Justification des choix
 
 - **Pas de lien direct TRANSACTION ↔ DIAGNOSTIC_DPE** : les deux sources n'ont pas de clé fiable au niveau du logement (DVF identifie une parcelle, le DPE une adresse géocodée). Le rapprochement se fait donc **au niveau commune**, seule clé fiable aux deux sources, suffisante pour répondre à la problématique.
 - **Entité COMMUNE séparée** plutôt que dupliquer les infos géographiques dans chaque table : évite la redondance et garantit une source de vérité unique (le COG), en contrainte d'intégrité référentielle sur les deux autres tables.
 
-## Diagramme (dbdiagram.io)
+## Diagramme
 
-Schéma DBML prêt à coller sur [dbdiagram.io](https://dbdiagram.io) :
+Réalisé sur [dbdiagram.io](https://dbdiagram.io) :
 
-```dbml
-Table commune {
-  code_insee char(5) [pk]
-  nom_commune varchar(100)
-  code_postal char(5)
-  epci_code varchar(15)
-  epci_nom varchar(150)
-  dep_code char(2)
-  dep_nom varchar(50)
-  reg_code char(2)
-  reg_nom varchar(50)
-}
-
-Table transaction_dvf {
-  id_transaction bigint [pk, increment]
-  id_mutation varchar(20)
-  date_mutation date
-  nature_mutation varchar(50)
-  valeur_fonciere numeric(12,2)
-  code_insee char(5) [ref: > commune.code_insee]
-  type_local varchar(50)
-  surface_reelle_bati numeric(8,2)
-  nombre_pieces_principales smallint
-  surface_terrain numeric(10,2)
-  longitude numeric(9,6)
-  latitude numeric(9,6)
-}
-
-Table diagnostic_dpe {
-  numero_dpe varchar(20) [pk]
-  code_insee char(5) [ref: > commune.code_insee]
-  date_etablissement_dpe date
-  etiquette_dpe char(1)
-  etiquette_ges char(1)
-  annee_construction integer
-  periode_construction varchar(20)
-  type_batiment varchar(30)
-  surface_habitable_logement numeric(8,2)
-  adresse varchar(255)
-}
-```
+![Modèle conceptuel — dbdiagram.io](assets/modele_conceptuel_dbdiagram.png){width=90%}
