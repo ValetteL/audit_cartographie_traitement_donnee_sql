@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="ValetteL" />
+  <meta name="author" content="Staxiii" />
+  <title>TP — Audit &amp; cartographie des données</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">:root {
+--fg: #1a1a1a;
+--muted: #5a5a5a;
+--accent: #1a56db;
+--border: #d8dde3;
+--code-bg: #f4f6f8;
+}
+* { box-sizing: border-box; }
+body {
+max-width: 880px;
+margin: 0 auto;
+padding: 2.5rem 1.5rem 6rem;
+font-family: "Segoe UI", Calibri, Arial, sans-serif;
+line-height: 1.55;
+color: var(--fg);
+font-size: 16px;
+}
+h1, h2, h3, h4 { line-height: 1.25; }
+h1 { font-size: 1.9rem; margin-top: 3rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.4rem; }
+h1:first-of-type { margin-top: 0; border-bottom: none; padding-bottom: 0; }
+h2 { font-size: 1.35rem; margin-top: 2.2rem; color: #0d1b3e; }
+h3 { font-size: 1.1rem; margin-top: 1.6rem; }
+h4 { font-size: 1rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+p { margin: 0.7rem 0; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: 0.25rem 0; }
+table {
+border-collapse: collapse;
+width: 100%;
+margin: 1rem 0 1.5rem;
+font-size: 0.92rem;
+}
+th, td {
+border: 1px solid var(--border);
+padding: 0.45rem 0.6rem;
+text-align: left;
+vertical-align: top;
+}
+th { background: #eef2f9; font-weight: 600; }
+tr:nth-child(even) td { background: #fafbfc; }
+code {
+font-family: Consolas, "SF Mono", monospace;
+background: var(--code-bg);
+padding: 0.1em 0.35em;
+border-radius: 3px;
+font-size: 0.88em;
+}
+pre {
+background: var(--code-bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 0.9rem 1rem;
+overflow-x: auto;
+font-size: 0.85rem;
+line-height: 1.45;
+}
+pre code { background: none; padding: 0; }
+blockquote {
+border-left: 4px solid var(--accent);
+margin: 1rem 0;
+padding: 0.3rem 1rem;
+color: var(--muted);
+background: #f7f9fc;
+}
+hr { border: none; border-top: 1px solid var(--border); margin: 2.2rem 0; }
+#TOC {
+background: #f7f9fc;
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 1rem 1.8rem;
+margin: 1.5rem 0 2.5rem;
+}
+#TOC ul { list-style: none; padding-left: 1.1rem; }
+#TOC > ul { padding-left: 0; }
+#TOC a { color: var(--fg); }
+.title { font-size: 2.1rem; margin-bottom: 0.2rem; }
+.subtitle { font-size: 1.2rem; color: var(--muted); font-weight: 400; margin-top: 0; }
+.author, .date { color: var(--muted); }
+@media print {
+body { max-width: none; }
+h1 { page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+}
+@media (max-width: 600px) {
+body { font-size: 15px; padding: 1.5rem 1rem 4rem; }
+table { font-size: 0.82rem; }
+}
+</style>
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TP — Audit &amp; cartographie des données</h1>
+<p class="subtitle">Immobilier × Énergie — Loire-Atlantique (44)</p>
+<p class="author">ValetteL</p>
+<p class="author">Staxiii</p>
+<p class="date">24 septembre 2026</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#présentation-du-sujet" id="toc-présentation-du-sujet">1.
+Présentation du sujet</a>
+<ul>
+<li><a href="#contexte" id="toc-contexte">Contexte</a></li>
+<li><a href="#problématique" id="toc-problématique">Problématique</a></li>
+<li><a href="#objectif" id="toc-objectif">Objectif</a></li>
+<li><a href="#sujet-retenu" id="toc-sujet-retenu">Sujet retenu</a></li>
+<li><a href="#périmètre" id="toc-périmètre">Périmètre</a></li>
+<li><a href="#répartition-du-travail-avec-le-binôme" id="toc-répartition-du-travail-avec-le-binôme">Répartition du travail
+avec le binôme</a></li>
+<li><a href="#sommaire-de-la-documentation" id="toc-sommaire-de-la-documentation">Sommaire de la
+documentation</a></li>
+</ul></li>
+<li><a href="#sources-de-données" id="toc-sources-de-données">2. Sources
+de données</a>
+<ul>
+<li><a href="#dvf-demandes-de-valeurs-foncières-géolocalisée" id="toc-dvf-demandes-de-valeurs-foncières-géolocalisée">1. DVF —
+Demandes de valeurs foncières (géolocalisée)</a></li>
+<li><a href="#dpe-logements-existants-depuis-juillet-2021" id="toc-dpe-logements-existants-depuis-juillet-2021">2. DPE Logements
+existants (depuis juillet 2021)</a></li>
+<li><a href="#code-officiel-géographique-cog-communes" id="toc-code-officiel-géographique-cog-communes">3. Code Officiel
+Géographique (COG) — communes</a></li>
+<li><a href="#sources-optionnelles-non-retenues-envisagées-en-repli-100-énergie" id="toc-sources-optionnelles-non-retenues-envisagées-en-repli-100-énergie">Sources
+optionnelles (non retenues, envisagées en repli “100 %
+énergie”)</a></li>
+<li><a href="#remarque-sur-data.gouv.fr" id="toc-remarque-sur-data.gouv.fr">Remarque sur data.gouv.fr</a></li>
+</ul></li>
+<li><a href="#dictionnaire-de-données" id="toc-dictionnaire-de-données">3. Dictionnaire de données</a>
+<ul>
+<li><a href="#dvf-transactions-immobilières" id="toc-dvf-transactions-immobilières">DVF — transactions
+immobilières</a></li>
+<li><a href="#dpe-diagnostics-de-performance-énergétique" id="toc-dpe-diagnostics-de-performance-énergétique">DPE — diagnostics de
+performance énergétique</a></li>
+<li><a href="#cog-communes-référentiel-géographique" id="toc-cog-communes-référentiel-géographique">COG — communes
+(référentiel géographique)</a></li>
+<li><a href="#clé-de-rapprochement-entre-les-sources" id="toc-clé-de-rapprochement-entre-les-sources">Clé de rapprochement
+entre les sources</a></li>
+</ul></li>
+<li><a href="#modèle-conceptuel-mcd" id="toc-modèle-conceptuel-mcd">4.
+Modèle conceptuel (MCD)</a>
+<ul>
+<li><a href="#entités-et-attributs" id="toc-entités-et-attributs">Entités et attributs</a></li>
+<li><a href="#relations-et-cardinalités" id="toc-relations-et-cardinalités">Relations et cardinalités</a></li>
+<li><a href="#justification-des-choix" id="toc-justification-des-choix">Justification des choix</a></li>
+<li><a href="#diagramme-dbdiagram.io" id="toc-diagramme-dbdiagram.io">Diagramme (dbdiagram.io)</a></li>
+</ul></li>
+<li><a href="#modèle-logique-mld" id="toc-modèle-logique-mld">5. Modèle
+logique (MLD)</a>
+<ul>
+<li><a href="#commune-1" id="toc-commune-1">commune</a></li>
+<li><a href="#transaction_dvf" id="toc-transaction_dvf">transaction_dvf</a></li>
+<li><a href="#diagnostic_dpe-1" id="toc-diagnostic_dpe-1">diagnostic_dpe</a></li>
+<li><a href="#relations-clés-étrangères" id="toc-relations-clés-étrangères">Relations (clés étrangères)</a></li>
+<li><a href="#index" id="toc-index">Index</a></li>
+</ul></li>
+<li><a href="#base-postgresql" id="toc-base-postgresql">6. Base
+PostgreSQL</a>
+<ul>
+<li><a href="#scripts" id="toc-scripts">Scripts</a></li>
+<li><a href="#comment-reproduire" id="toc-comment-reproduire">Comment
+reproduire</a></li>
+<li><a href="#résultats-de-la-vérification-exécutée-le-24092026" id="toc-résultats-de-la-vérification-exécutée-le-24092026">Résultats de
+la vérification (exécutée le 24/09/2026)</a></li>
+<li><a href="#résultat-des-requêtes-danalyse" id="toc-résultat-des-requêtes-danalyse">Résultat des requêtes
+d’analyse</a></li>
+</ul></li>
+<li><a href="#cartographie-globale" id="toc-cartographie-globale">7.
+Cartographie globale</a>
+<ul>
+<li><a href="#lecture-du-schéma" id="toc-lecture-du-schéma">Lecture du
+schéma</a></li>
+</ul></li>
+<li><a href="#annexe-audit-de-la-qualité-des-données" id="toc-annexe-audit-de-la-qualité-des-données">Annexe — Audit de la
+qualité des données</a>
+<ul>
+<li><a href="#résultats-par-source" id="toc-résultats-par-source">Résultats par source</a></li>
+<li><a href="#anomalie-découverte-lors-des-tests-sql" id="toc-anomalie-découverte-lors-des-tests-sql">Anomalie découverte lors
+des tests SQL</a></li>
+<li><a href="#valeur-aberrante-détectée-en-sortie-danalyse" id="toc-valeur-aberrante-détectée-en-sortie-danalyse">Valeur aberrante
+détectée en sortie d’analyse</a></li>
+<li><a href="#vérification-de-bout-en-bout" id="toc-vérification-de-bout-en-bout">Vérification de bout en
+bout</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="présentation-du-sujet">1. Présentation du sujet</h1>
+<h2 id="contexte">Contexte</h2>
+<p>La rénovation énergétique et la valeur des biens immobiliers sont
+deux enjeux étroitement liés en France : depuis 2021, le Diagnostic de
+Performance Énergétique (DPE) est opposable et influence de plus en plus
+la décision d’achat, tandis que les données de transactions immobilières
+(DVF) permettent d’objectiver les prix du marché. Croiser ces deux
+sources à l’échelle d’un département permet de sortir du discours
+général et d’observer, sur des données réelles, le lien entre
+performance énergétique et marché immobilier local.</p>
+<h2 id="problématique">Problématique</h2>
+<p>Dans le département de la <strong>Loire-Atlantique (44)</strong>,
+existe-t-il un écart de prix observable entre les logements performants
+(étiquettes DPE A/B/C) et les logements énergivores (étiquettes F/G), et
+comment cet écart varie-t-il selon les communes ?</p>
+<h2 id="objectif">Objectif</h2>
+<p>Construire, à partir de trois jeux de données publics réels, une base
+de données PostgreSQL structurée permettant :</p>
+<ul>
+<li>de rapprocher transactions immobilières et diagnostics énergétiques
+à l’échelle communale,</li>
+<li>de cartographier les communes du département selon le niveau de prix
+et la performance énergétique du parc de logements,</li>
+<li>de servir de support à des requêtes d’analyse (prix moyen au m² par
+étiquette DPE, par commune, etc.).</li>
+</ul>
+<h2 id="sujet-retenu">Sujet retenu</h2>
+<p><strong>Immobilier × Énergie</strong> — croisement de deux sujets de
+la liste plutôt qu’un seul, pour donner du sens à l’analyse (un jeu de
+données immobilier seul ne dit rien sur l’énergie, et inversement).</p>
+<h2 id="périmètre">Périmètre</h2>
+<p><strong>Département : Loire-Atlantique (44)</strong>, 207 communes.
+Choix motivé par un équilibre entre pôle urbain dense (Nantes,
+Saint-Nazaire) et zones rurales/littorales, offrant une diversité de
+types de logements et de niveaux de prix, avec une volumétrie de données
+maîtrisable pour un TP (dizaines à centaines de milliers de lignes, pas
+de traitement à l’échelle nationale).</p>
+<h2 id="répartition-du-travail-avec-le-binôme">Répartition du travail
+avec le binôme</h2>
+<p>À définir en interne — suggestion : un binôme prend en charge le
+pipeline DVF, l’autre le pipeline DPE, la jointure géographique (COG) et
+le rapprochement final étant fait à deux.</p>
+<h2 id="sommaire-de-la-documentation">Sommaire de la documentation</h2>
+<ol type="1">
+<li>01_presentation_sujet.md — ce document</li>
+<li>02_sources.md — sources de données</li>
+<li>03_dictionnaire_donnees.md — dictionnaire de données</li>
+<li>04_modele_conceptuel.md — modèle conceptuel (MCD)</li>
+<li>05_modele_logique.md — modèle logique (MLD)</li>
+<li>06_base_postgresql.md — base PostgreSQL</li>
+<li>07_cartographie_globale.md — cartographie globale du
+cheminement</li>
+<li>annexe_audit_qualite.md — audit de qualité des données (travail
+préparatoire)</li>
+</ol>
+<h1 id="sources-de-données">2. Sources de données</h1>
+<p>Trois sources réelles, toutes restreintes au département de la
+Loire-Atlantique (44). Pour chacune : nom, organisation/origine, URL,
+format, nature, description, et méthode de récupération effectivement
+utilisée.</p>
+<h2 id="dvf-demandes-de-valeurs-foncières-géolocalisée">1. DVF —
+Demandes de valeurs foncières (géolocalisée)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nom de la source</td>
+<td>DVF géolocalisée (geo-dvf)</td>
+</tr>
+<tr>
+<td>Organisation / origine</td>
+<td>DGFiP, republiée/enrichie par Etalab</td>
+</tr>
+<tr>
+<td>URL fiche</td>
+<td>https://www.data.gouv.fr/datasets/demande-de-valeurs-foncieres-geolocalisee-1</td>
+</tr>
+<tr>
+<td>URL fichier utilisé (dépt. 44)</td>
+<td>https://files.data.gouv.fr/geo-dvf/latest/csv/2025/departements/44.csv.gz</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>CSV compressé (.csv.gz)</td>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Structurée (fichier tabulaire, une ligne = une disposition de
+mutation)</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Transactions immobilières réelles (mutations foncières : ventes de
+maisons, appartements, terrains, locaux) sur le département 44,
+géolocalisées, historique glissant. Chaque mutation peut être répartie
+sur plusieurs lignes (plusieurs lots/parcelles).</td>
+</tr>
+<tr>
+<td>Licence</td>
+<td>Licence Ouverte / Etalab</td>
+</tr>
+<tr>
+<td>Récupération</td>
+<td>Téléchargement direct du CSV compressé du département
+(<code>curl</code>), conservé tel quel dans
+<code>data/dvf_44_2025.csv.gz</code> (non versionné,
+cf. <code>.gitignore</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Le dépôt GitHub <a href="https://github.com/datagouv/dvf">datagouv/dvf</a> documente le
+schéma des colonnes.</p>
+<h2 id="dpe-logements-existants-depuis-juillet-2021">2. DPE Logements
+existants (depuis juillet 2021)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nom de la source</td>
+<td>DPE Logements existants</td>
+</tr>
+<tr>
+<td>Organisation / origine</td>
+<td>ADEME — Observatoire DPE-Audit</td>
+</tr>
+<tr>
+<td>URL fiche</td>
+<td>https://data.ademe.fr/datasets/dpe03existant</td>
+</tr>
+<tr>
+<td>URL API utilisée</td>
+<td>https://data.ademe.fr/data-fair/api/v1/datasets/dpe03existant/lines</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>JSON via API (data-fair), converti en CSV</td>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Structurée (schéma de 230 champs, un enregistrement = un
+diagnostic)</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Diagnostics de performance énergétique individuels (par logement) :
+étiquette énergie, étiquette GES, année de construction, surface
+habitable, type de bâtiment, adresse.</td>
+</tr>
+<tr>
+<td>Licence</td>
+<td>Licence Ouverte / Etalab</td>
+</tr>
+<tr>
+<td>Récupération</td>
+<td>Filtrage via le paramètre <code>qs=code_departement_ban:44</code> de
+l’API, pagination par curseur (<code>next</code>), export d’une
+sélection de 11 colonnes pertinentes vers <code>data/dpe_44.csv</code>
+(non versionné). ~352 000 diagnostics sur le département.</td>
+</tr>
+</tbody>
+</table>
+<p>Champ de filtrage département confirmé dans le schéma de l’API :
+<code>code_departement_ban</code>. Champ de jointure commune :
+<code>code_insee_ban</code>.</p>
+<h2 id="code-officiel-géographique-cog-communes">3. Code Officiel
+Géographique (COG) — communes</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nom de la source</td>
+<td>Liste des communes de France (COG)</td>
+</tr>
+<tr>
+<td>Organisation / origine</td>
+<td>INSEE, republiée via data.gouv.fr</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>https://www.data.gouv.fr/datasets/communes-et-villes-de-france-en-csv-excel-json-parquet-et-feather</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>CSV</td>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Structurée (une ligne = une commune)</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Table de référence géographique : code INSEE, nom, codes postaux,
+département, région, EPCI, population, superficie.</td>
+</tr>
+<tr>
+<td>Licence</td>
+<td>Licence Ouverte / Etalab</td>
+</tr>
+<tr>
+<td>Récupération</td>
+<td>Téléchargement du fichier national puis filtrage sur
+<code>dep_code = 44</code> (207 communes), écrit dans
+<code>data/cog_communes_44.csv</code> (non versionné)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sources-optionnelles-non-retenues-envisagées-en-repli-100-énergie">Sources
+optionnelles (non retenues, envisagées en repli “100 % énergie”)</h2>
+<p><strong>Consommation électrique annuelle par commune et secteur
+d’activité</strong> — Enedis. CSV / API Opendatasoft, structurée.
+Agrégats annuels 2011–2024 de consommation électrique, maille commune.
+URL :
+https://data.enedis.fr/explore/dataset/consommation-electrique-par-secteur-dactivite-commune/</p>
+<p><strong>Données éCO2mix régionales consolidées</strong> — RTE, Open
+Data Réseaux Énergies (ODRÉ). CSV / API, structurée.
+Production/consommation régionale par filière (Pays de la Loire), pas
+demi-horaire. URL :
+https://odre.opendatasoft.com/explore/dataset/eco2mix-regional-cons-def/</p>
+<h2 id="remarque-sur-data.gouv.fr">Remarque sur data.gouv.fr</h2>
+<p>Conservé pour le COG (fiche officielle et stable), mais pour DVF et
+DPE les données sont récupérées directement depuis les portails sources
+qui font autorité (respectivement
+<code>files.data.gouv.fr/geo-dvf</code> et <code>data.ademe.fr</code>),
+plus fiables et mieux documentés que les entrées data.gouv.fr qui les
+référencent.</p>
+<h1 id="dictionnaire-de-données">3. Dictionnaire de données</h1>
+<p>Analyse des principales colonnes retenues pour chaque source,
+restreintes au département 44. Seules les colonnes utiles au modèle sont
+détaillées (les fichiers sources bruts contiennent davantage de colonnes
+— 38 pour DVF, 230 pour le DPE).</p>
+<h2 id="dvf-transactions-immobilières">DVF — transactions
+immobilières</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Description</th>
+<th>Type</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id_mutation</code></td>
+<td>Identifiant de la mutation (peut se répéter sur plusieurs lignes si
+plusieurs lots/parcelles)</td>
+<td>varchar</td>
+<td><code>2025-563764</code></td>
+</tr>
+<tr>
+<td><code>date_mutation</code></td>
+<td>Date de la transaction</td>
+<td>date</td>
+<td><code>2025-01-06</code></td>
+</tr>
+<tr>
+<td><code>nature_mutation</code></td>
+<td>Type de mutation</td>
+<td>varchar</td>
+<td><code>Vente</code></td>
+</tr>
+<tr>
+<td><code>valeur_fonciere</code></td>
+<td>Prix de la transaction en euros</td>
+<td>numeric</td>
+<td><code>175000</code></td>
+</tr>
+<tr>
+<td><code>code_postal</code></td>
+<td>Code postal du bien</td>
+<td>char(5)</td>
+<td><code>44520</code></td>
+</tr>
+<tr>
+<td><code>code_commune</code></td>
+<td>Code INSEE de la commune</td>
+<td>char(5)</td>
+<td><code>44099</code></td>
+</tr>
+<tr>
+<td><code>nom_commune</code></td>
+<td>Nom de la commune</td>
+<td>varchar</td>
+<td><code>Moisdon-la-Rivière</code></td>
+</tr>
+<tr>
+<td><code>code_departement</code></td>
+<td>Code département</td>
+<td>char(2)</td>
+<td><code>44</code></td>
+</tr>
+<tr>
+<td><code>id_parcelle</code></td>
+<td>Identifiant cadastral de la parcelle</td>
+<td>varchar</td>
+<td><code>44099000AC0006</code></td>
+</tr>
+<tr>
+<td><code>code_type_local</code></td>
+<td>Code du type de local</td>
+<td>integer</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>type_local</code></td>
+<td>Type de bien</td>
+<td>varchar</td>
+<td><code>Maison</code>, <code>Appartement</code></td>
+</tr>
+<tr>
+<td><code>surface_reelle_bati</code></td>
+<td>Surface bâtie en m²</td>
+<td>numeric</td>
+<td><code>98</code></td>
+</tr>
+<tr>
+<td><code>nombre_pieces_principales</code></td>
+<td>Nombre de pièces</td>
+<td>integer</td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>surface_terrain</code></td>
+<td>Surface du terrain en m²</td>
+<td>numeric</td>
+<td><code>945</code></td>
+</tr>
+<tr>
+<td><code>longitude</code> / <code>latitude</code></td>
+<td>Coordonnées géographiques</td>
+<td>numeric</td>
+<td><code>-1.37258</code> / <code>47.624643</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="dpe-diagnostics-de-performance-énergétique">DPE — diagnostics de
+performance énergétique</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Description</th>
+<th>Type</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>numero_dpe</code></td>
+<td>Identifiant unique du diagnostic</td>
+<td>varchar</td>
+<td><code>2644E0039039K</code></td>
+</tr>
+<tr>
+<td><code>code_insee_ban</code></td>
+<td>Code INSEE de la commune (géocodage BAN)</td>
+<td>char(5)</td>
+<td><code>44109</code></td>
+</tr>
+<tr>
+<td><code>code_postal_ban</code></td>
+<td>Code postal (géocodage BAN)</td>
+<td>char(5)</td>
+<td><code>44300</code></td>
+</tr>
+<tr>
+<td><code>date_etablissement_dpe</code></td>
+<td>Date de réalisation du diagnostic</td>
+<td>date</td>
+<td><code>2026-01-07</code></td>
+</tr>
+<tr>
+<td><code>etiquette_dpe</code></td>
+<td>Étiquette énergie (A à G)</td>
+<td>char(1)</td>
+<td><code>C</code></td>
+</tr>
+<tr>
+<td><code>etiquette_ges</code></td>
+<td>Étiquette gaz à effet de serre (A à G)</td>
+<td>char(1)</td>
+<td><code>C</code></td>
+</tr>
+<tr>
+<td><code>annee_construction</code></td>
+<td>Année de construction du bâtiment</td>
+<td>integer</td>
+<td><code>2020</code></td>
+</tr>
+<tr>
+<td><code>periode_construction</code></td>
+<td>Tranche de période de construction</td>
+<td>varchar</td>
+<td><code>2013-2021</code></td>
+</tr>
+<tr>
+<td><code>type_batiment</code></td>
+<td>Type de bâtiment</td>
+<td>varchar</td>
+<td><code>appartement</code>, <code>maison</code></td>
+</tr>
+<tr>
+<td><code>surface_habitable_logement</code></td>
+<td>Surface habitable en m²</td>
+<td>numeric</td>
+<td><code>64.3</code></td>
+</tr>
+<tr>
+<td><code>adresse_ban</code></td>
+<td>Adresse complète normalisée (BAN)</td>
+<td>varchar</td>
+<td><code>20 Route de Carquefou 44300 Nantes</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cog-communes-référentiel-géographique">COG — communes
+(référentiel géographique)</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Description</th>
+<th>Type</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code_insee</code></td>
+<td>Code INSEE de la commune (clé primaire)</td>
+<td>char(5)</td>
+<td><code>44109</code></td>
+</tr>
+<tr>
+<td><code>nom_standard</code></td>
+<td>Nom usuel de la commune</td>
+<td>varchar</td>
+<td><code>Nantes</code></td>
+</tr>
+<tr>
+<td><code>dep_code</code></td>
+<td>Code département</td>
+<td>char(2)</td>
+<td><code>44</code></td>
+</tr>
+<tr>
+<td><code>dep_nom</code></td>
+<td>Nom du département</td>
+<td>varchar</td>
+<td><code>Loire-Atlantique</code></td>
+</tr>
+<tr>
+<td><code>reg_code</code></td>
+<td>Code région</td>
+<td>char(2)</td>
+<td><code>52</code></td>
+</tr>
+<tr>
+<td><code>reg_nom</code></td>
+<td>Nom de la région</td>
+<td>varchar</td>
+<td><code>Pays de la Loire</code></td>
+</tr>
+<tr>
+<td><code>code_postal</code></td>
+<td>Code postal principal</td>
+<td>char(5)</td>
+<td><code>44000</code></td>
+</tr>
+<tr>
+<td><code>epci_code</code> / <code>epci_nom</code></td>
+<td>Identifiant / nom de l’intercommunalité</td>
+<td>varchar</td>
+<td><code>244400404</code> / <code>Nantes Métropole</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="clé-de-rapprochement-entre-les-sources">Clé de rapprochement
+entre les sources</h2>
+<p>Les trois sources partagent un <strong>code INSEE de commune à 5
+caractères</strong> :</p>
+<ul>
+<li>DVF : <code>code_commune</code></li>
+<li>DPE : <code>code_insee_ban</code></li>
+<li>COG : <code>code_insee</code></li>
+</ul>
+<p>C’est la clé utilisée pour la jointure géographique dans le modèle
+(cf. 04_modele_conceptuel.md).</p>
+<h1 id="modèle-conceptuel-mcd">4. Modèle conceptuel (MCD)</h1>
+<h2 id="entités-et-attributs">Entités et attributs</h2>
+<h3 id="commune">COMMUNE</h3>
+<p>Table de référence géographique, issue du COG, restreinte au
+département 44 (207 communes).</p>
+<ul>
+<li><code>code_insee</code> (identifiant)</li>
+<li><code>nom_commune</code></li>
+<li><code>code_postal</code></li>
+<li><code>epci_code</code>, <code>epci_nom</code></li>
+<li><code>dep_code</code>, <code>dep_nom</code></li>
+<li><code>reg_code</code>, <code>reg_nom</code></li>
+</ul>
+<h3 id="transaction">TRANSACTION</h3>
+<p>Une transaction immobilière (mutation DVF), rattachée à une
+commune.</p>
+<ul>
+<li><code>id_transaction</code> (identifiant)</li>
+<li><code>id_mutation</code></li>
+<li><code>date_mutation</code></li>
+<li><code>nature_mutation</code></li>
+<li><code>valeur_fonciere</code></li>
+<li><code>type_local</code></li>
+<li><code>surface_reelle_bati</code></li>
+<li><code>nombre_pieces_principales</code></li>
+<li><code>surface_terrain</code></li>
+<li><code>longitude</code>, <code>latitude</code></li>
+</ul>
+<h3 id="diagnostic_dpe">DIAGNOSTIC_DPE</h3>
+<p>Un diagnostic de performance énergétique, rattaché à une commune.</p>
+<ul>
+<li><code>numero_dpe</code> (identifiant)</li>
+<li><code>date_etablissement_dpe</code></li>
+<li><code>etiquette_dpe</code></li>
+<li><code>etiquette_ges</code></li>
+<li><code>annee_construction</code></li>
+<li><code>periode_construction</code></li>
+<li><code>type_batiment</code></li>
+<li><code>surface_habitable_logement</code></li>
+<li><code>adresse</code></li>
+</ul>
+<h2 id="relations-et-cardinalités">Relations et cardinalités</h2>
+<pre><code>COMMUNE 1 ───── N TRANSACTION
+COMMUNE 1 ───── N DIAGNOSTIC_DPE</code></pre>
+<ul>
+<li>Une <strong>commune</strong> est concernée par <strong>0 à N
+transactions</strong> ; une <strong>transaction</strong> appartient à
+<strong>exactement 1 commune</strong>.</li>
+<li>Une <strong>commune</strong> est concernée par <strong>0 à N
+diagnostics DPE</strong> ; un <strong>diagnostic</strong> porte sur
+<strong>exactement 1 commune</strong>.</li>
+</ul>
+<h2 id="justification-des-choix">Justification des choix</h2>
+<p><strong>Pourquoi ne pas relier directement TRANSACTION et
+DIAGNOSTIC_DPE ?</strong> Les deux sources ne partagent pas de clé
+fiable au niveau du logement individuel : DVF identifie une parcelle
+cadastrale (<code>id_parcelle</code>), le DPE une adresse géocodée
+(<code>adresse_ban</code>). Un rapprochement adresse-à-adresse est
+possible mais nécessite un géocodage/appariement flou (fuzzy matching),
+hors du périmètre d’un MCD simple. Le rapprochement est donc fait
+<strong>au niveau commune</strong>, la seule clé strictement commune et
+fiable aux deux sources (<code>code_insee</code>), ce qui suffit pour
+répondre à la problématique (comparer prix et performance énergétique
+par commune).</p>
+<p><strong>Pourquoi une entité COMMUNE séparée plutôt que dupliquer les
+infos géographiques dans chaque table ?</strong> Pour éviter la
+redondance (nom de commune, département, région répétés sur des dizaines
+de milliers de lignes) et garantir la cohérence : une seule source de
+vérité pour le référentiel géographique (COG), utilisée en contrainte
+d’intégrité référentielle sur les deux autres tables.</p>
+<h2 id="diagramme-dbdiagram.io">Diagramme (dbdiagram.io)</h2>
+<p>Schéma DBML prêt à coller sur <a href="https://dbdiagram.io">dbdiagram.io</a> :</p>
+<pre class="dbml"><code>Table commune {
+  code_insee char(5) [pk]
+  nom_commune varchar(100)
+  code_postal char(5)
+  epci_code varchar(15)
+  epci_nom varchar(150)
+  dep_code char(2)
+  dep_nom varchar(50)
+  reg_code char(2)
+  reg_nom varchar(50)
+}
+
+Table transaction_dvf {
+  id_transaction bigint [pk, increment]
+  id_mutation varchar(20)
+  date_mutation date
+  nature_mutation varchar(50)
+  valeur_fonciere numeric(12,2)
+  code_insee char(5) [ref: &gt; commune.code_insee]
+  type_local varchar(50)
+  surface_reelle_bati numeric(8,2)
+  nombre_pieces_principales smallint
+  surface_terrain numeric(10,2)
+  longitude numeric(9,6)
+  latitude numeric(9,6)
+}
+
+Table diagnostic_dpe {
+  numero_dpe varchar(20) [pk]
+  code_insee char(5) [ref: &gt; commune.code_insee]
+  date_etablissement_dpe date
+  etiquette_dpe char(1)
+  etiquette_ges char(1)
+  annee_construction integer
+  periode_construction varchar(20)
+  type_batiment varchar(30)
+  surface_habitable_logement numeric(8,2)
+  adresse varchar(255)
+}</code></pre>
+<h1 id="modèle-logique-mld">5. Modèle logique (MLD)</h1>
+<p>Traduction du modèle conceptuel (04_modele_conceptuel.md) en tables
+relationnelles. Script de création correspondant : <a href="../sql/01_create_tables.sql">sql/01_create_tables.sql</a>.</p>
+<h2 id="commune-1">commune</h2>
+<table>
+<thead>
+<tr>
+<th>Colonne</th>
+<th>Type</th>
+<th>Contrainte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code_insee</td>
+<td>CHAR(5)</td>
+<td><strong>PK</strong></td>
+</tr>
+<tr>
+<td>nom_commune</td>
+<td>VARCHAR(100)</td>
+<td>NOT NULL</td>
+</tr>
+<tr>
+<td>code_postal</td>
+<td>CHAR(5)</td>
+<td></td>
+</tr>
+<tr>
+<td>epci_code</td>
+<td>VARCHAR(15)</td>
+<td></td>
+</tr>
+<tr>
+<td>epci_nom</td>
+<td>VARCHAR(150)</td>
+<td></td>
+</tr>
+<tr>
+<td>dep_code</td>
+<td>CHAR(2)</td>
+<td>NOT NULL</td>
+</tr>
+<tr>
+<td>dep_nom</td>
+<td>VARCHAR(50)</td>
+<td></td>
+</tr>
+<tr>
+<td>reg_code</td>
+<td>CHAR(2)</td>
+<td></td>
+</tr>
+<tr>
+<td>reg_nom</td>
+<td>VARCHAR(50)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="transaction_dvf">transaction_dvf</h2>
+<table>
+<thead>
+<tr>
+<th>Colonne</th>
+<th>Type</th>
+<th>Contrainte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id_transaction</td>
+<td>BIGSERIAL</td>
+<td><strong>PK</strong></td>
+</tr>
+<tr>
+<td>id_mutation</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL</td>
+</tr>
+<tr>
+<td>date_mutation</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+</tr>
+<tr>
+<td>nature_mutation</td>
+<td>VARCHAR(50)</td>
+<td></td>
+</tr>
+<tr>
+<td>valeur_fonciere</td>
+<td>NUMERIC(12,2)</td>
+<td>NOT NULL, CHECK ≥ 0</td>
+</tr>
+<tr>
+<td>code_insee</td>
+<td>CHAR(5)</td>
+<td><strong>FK</strong> → commune(code_insee), NOT NULL</td>
+</tr>
+<tr>
+<td>type_local</td>
+<td>VARCHAR(50)</td>
+<td></td>
+</tr>
+<tr>
+<td>surface_reelle_bati</td>
+<td>NUMERIC(8,2)</td>
+<td>CHECK ≥ 0</td>
+</tr>
+<tr>
+<td>nombre_pieces_principales</td>
+<td>SMALLINT</td>
+<td></td>
+</tr>
+<tr>
+<td>surface_terrain</td>
+<td>NUMERIC(10,2)</td>
+<td>CHECK ≥ 0</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>NUMERIC(9,6)</td>
+<td></td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>NUMERIC(9,6)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Notation : <code>transaction_dvf</code> porte une clé primaire
+technique (<code>id_transaction</code>) car une même mutation DVF
+(<code>id_mutation</code>) peut apparaître sur plusieurs lignes du
+fichier source (un lot/parcelle par ligne) — <code>id_mutation</code>
+est donc conservé comme attribut, pas comme clé.</p>
+<h2 id="diagnostic_dpe-1">diagnostic_dpe</h2>
+<table>
+<thead>
+<tr>
+<th>Colonne</th>
+<th>Type</th>
+<th>Contrainte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>numero_dpe</td>
+<td>VARCHAR(20)</td>
+<td><strong>PK</strong></td>
+</tr>
+<tr>
+<td>code_insee</td>
+<td>CHAR(5)</td>
+<td><strong>FK</strong> → commune(code_insee), NOT NULL</td>
+</tr>
+<tr>
+<td>date_etablissement_dpe</td>
+<td>DATE</td>
+<td></td>
+</tr>
+<tr>
+<td>etiquette_dpe</td>
+<td>CHAR(1)</td>
+<td>CHECK IN (A..G)</td>
+</tr>
+<tr>
+<td>etiquette_ges</td>
+<td>CHAR(1)</td>
+<td>CHECK IN (A..G)</td>
+</tr>
+<tr>
+<td>annee_construction</td>
+<td>INTEGER</td>
+<td></td>
+</tr>
+<tr>
+<td>periode_construction</td>
+<td>VARCHAR(20)</td>
+<td></td>
+</tr>
+<tr>
+<td>type_batiment</td>
+<td>VARCHAR(30)</td>
+<td></td>
+</tr>
+<tr>
+<td>surface_habitable_logement</td>
+<td>NUMERIC(8,2)</td>
+<td>CHECK ≥ 0</td>
+</tr>
+<tr>
+<td>adresse</td>
+<td>VARCHAR(255)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="relations-clés-étrangères">Relations (clés étrangères)</h2>
+<ul>
+<li><code>transaction_dvf.code_insee</code> →
+<code>commune.code_insee</code></li>
+<li><code>diagnostic_dpe.code_insee</code> →
+<code>commune.code_insee</code></li>
+</ul>
+<h2 id="index">Index</h2>
+<ul>
+<li><code>commune</code> : PK sur <code>code_insee</code> (index
+automatique)</li>
+<li><code>transaction_dvf</code> : index sur <code>code_insee</code>
+(jointures), index sur <code>date_mutation</code></li>
+<li><code>diagnostic_dpe</code> : index sur <code>code_insee</code>
+(jointures), index sur <code>etiquette_dpe</code></li>
+</ul>
+<h1 id="base-postgresql">6. Base PostgreSQL</h1>
+<h2 id="scripts">Scripts</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Script</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../sql/01_create_tables.sql">sql/01_create_tables.sql</a></td>
+<td>Création des 3 tables, contraintes, index</td>
+</tr>
+<tr>
+<td><a href="../sql/02_insert_test_data.sql">sql/02_insert_test_data.sql</a></td>
+<td>Quelques données de test manuelles (3 communes, 3 transactions, 3
+diagnostics)</td>
+</tr>
+<tr>
+<td><a href="../sql/03_import_donnees_reelles.sql">sql/03_import_donnees_reelles.sql</a></td>
+<td>Import des données réelles nettoyées du département 44
+(<code>data/staging/</code>)</td>
+</tr>
+<tr>
+<td><a href="../sql/04_requetes_verification.sql">sql/04_requetes_verification.sql</a></td>
+<td>Contrôle des relations (comptages, orphelins)</td>
+</tr>
+<tr>
+<td><a href="../sql/05_requetes_analyse.sql">sql/05_requetes_analyse.sql</a></td>
+<td>Requêtes répondant à la problématique du TP</td>
+</tr>
+</tbody>
+</table>
+<h2 id="comment-reproduire">Comment reproduire</h2>
+<h3 id="option-a-via-docker-utilisée-pour-valider-les-scripts">Option A
+— via Docker (utilisée pour valider les scripts)</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> tp_audit_44_pg <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_DB=audit_immo_energie_44 <span class="at">-p</span> 5433:5432 postgres:16</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="at">-h</span> localhost <span class="at">-p</span> 5433 <span class="at">-U</span> postgres <span class="at">-d</span> audit_immo_energie_44 <span class="at">-f</span> sql/01_create_tables.sql</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="at">-h</span> localhost <span class="at">-p</span> 5433 <span class="at">-U</span> postgres <span class="at">-d</span> audit_immo_energie_44 <span class="at">-f</span> sql/02_insert_test_data.sql   <span class="co"># données de test</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ou, pour les données réelles (depuis la racine du projet, où se trouve data/staging/) :</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="at">-h</span> localhost <span class="at">-p</span> 5433 <span class="at">-U</span> postgres <span class="at">-d</span> audit_immo_energie_44 <span class="at">-f</span> sql/03_import_donnees_reelles.sql</span></code></pre></div>
+<h3 id="option-b-via-pgadmin">Option B — via pgAdmin</h3>
+<ol type="1">
+<li>Créer une base <code>audit_immo_energie_44</code>.</li>
+<li>Ouvrir le Query Tool, exécuter
+<code>01_create_tables.sql</code>.</li>
+<li>Exécuter <code>02_insert_test_data.sql</code> pour les données de
+test, ou importer les CSV de <code>data/staging/</code> via l’outil
+d’import graphique de pgAdmin pour les données réelles.</li>
+</ol>
+<h2 id="résultats-de-la-vérification-exécutée-le-24092026">Résultats de
+la vérification (exécutée le 24/09/2026)</h2>
+<p>Base créée et testée sur une instance PostgreSQL 16 locale (Docker),
+avec import complet des trois sources nettoyées
+(cf. annexe_audit_qualite.md) :</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Lignes importées</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>commune</td>
+<td>207</td>
+</tr>
+<tr>
+<td>transaction_dvf</td>
+<td>79 315</td>
+</tr>
+<tr>
+<td>diagnostic_dpe</td>
+<td>351 959</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>0 transaction orpheline</strong>, <strong>0 diagnostic
+orphelin</strong> : toutes les clés étrangères vers <code>commune</code>
+sont valides.</li>
+<li>Les contraintes CHECK (étiquettes DPE/GES dans A–G, surfaces et prix
+≥ 0) sont passées sans erreur sur l’ensemble du jeu réel.</li>
+</ul>
+<h2 id="résultat-des-requêtes-danalyse">Résultat des requêtes
+d’analyse</h2>
+<p>Sur les données réelles, le croisement prix moyen au m² / part de
+logements F-G par commune (<code>sql/05_requetes_analyse.sql</code>,
+requête 3) fait apparaître une tendance : les communes les plus chères
+et les plus urbaines/littorales (Nantes 8 677 €/m² et 5,4 % de F-G,
+Saint-Herblain 4 108 €/m² et 3,0 %, Orvault 3 392 €/m² et 3,5 %) ont
+proportionnellement moins de logements énergivores que les communes
+rurales les moins chères (Juigné-des-Moutiers 1 078 €/m² et 35,7 % de
+F-G, Soulvache 1 001 €/m² et 25,7 %, Grand-Auverné 1 307 €/m² et 20,4
+%).</p>
+<p>Cette observation va dans le sens de la problématique posée
+(01_presentation_sujet.md) mais reste à nuancer : petites communes
+rurales = faibles effectifs (parfois &lt;30 ventes), et un parc ancien
+plus présent en zone rurale peut expliquer à la fois le prix bas et la
+mauvaise étiquette, sans lien de causalité direct entre les deux. Une
+valeur aberrante (Saint-Philbert-de-Grand-Lieu, 26 644 €/m²) a par
+ailleurs été identifiée et documentée dans l’annexe qualité — à traiter
+avant toute cartographie définitive.</p>
+<h1 id="cartographie-globale">7. Cartographie globale</h1>
+<p>Vue d’ensemble du cheminement, des données brutes à la base
+PostgreSQL.</p>
+<pre><code>┌─────────────────────────┐  ┌─────────────────────────┐  ┌─────────────────────────┐
+│ DVF géolocalisée (44)    │  │ DPE Logements existants  │  │ COG — communes           │
+│ DGFiP / Etalab            │  │ ADEME (API data-fair)    │  │ INSEE                    │
+│ files.data.gouv.fr/geo-dvf│  │ data.ademe.fr             │  │ data.gouv.fr              │
+│ 79 949 lignes brutes       │  │ 351 959 lignes brutes     │  │ 207 communes du 44        │
+└────────────┬─────────────┘  └────────────┬─────────────┘  └────────────┬─────────────┘
+             │                              │                             │
+             ▼                              ▼                             ▼
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │  Audit qualité + nettoyage (pandas)                                     │
+   │  filtrage code_insee absent du COG 44, valeurs manquantes, doublons,    │
+   │  types (cf. docs/annexe_audit_qualite.md)                               │
+   └───────────────────────────────────┬──────────────────────────────────┘
+                                        ▼
+                          data/staging/{commune,transaction_dvf,diagnostic_dpe}.csv
+                                        │
+                                        ▼
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │  Modélisation : MCD (docs/04) → MLD (docs/05)                          │
+   │  commune ──1─N── transaction_dvf                                        │
+   │  commune ──1─N── diagnostic_dpe                                         │
+   └───────────────────────────────────┬──────────────────────────────────┘
+                                        ▼
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │  Base PostgreSQL (docs/06)                                              │
+   │  sql/01_create_tables.sql → sql/03_import_donnees_reelles.sql           │
+   │  207 communes / 79 315 transactions / 351 959 diagnostics importés      │
+   └───────────────────────────────────┬──────────────────────────────────┘
+                                        ▼
+   ┌────────────────────────────────────────────────────────────────────────┐
+   │  Analyse (sql/05_requetes_analyse.sql)                                  │
+   │  prix moyen au m² × part de logements F-G, par commune                 │
+   │  → réponse à la problématique (docs/01_presentation_sujet.md)          │
+   └────────────────────────────────────────────────────────────────────────┘</code></pre>
+<h2 id="lecture-du-schéma">Lecture du schéma</h2>
+<ol type="1">
+<li><strong>Trois sources hétérogènes</strong> (formats et organisations
+différentes) sont ramenées à un périmètre commun : le département
+44.</li>
+<li><strong>L’audit qualité</strong> filtre et nettoie chaque source
+indépendamment avant toute jointure, en s’appuyant sur une clé
+géographique commune fiable (<code>code_insee</code>).</li>
+<li><strong>La modélisation</strong> choisit délibérément une
+architecture “en étoile” simple (deux tables de faits reliées uniquement
+par la dimension commune) plutôt qu’un rapprochement fin transaction ↔︎
+diagnostic, jugé trop incertain avec les clés disponibles
+(cf. justification dans 04_modele_conceptuel.md).</li>
+<li><strong>La base PostgreSQL</strong> matérialise ce modèle et a été
+testée de bout en bout avec les données réelles (0 ligne
+orpheline).</li>
+<li><strong>L’analyse finale</strong> répond à la problématique initiale
+à l’échelle communale, avec ses limites documentées (petits effectifs,
+valeur aberrante, corrélation ≠ causalité).</li>
+</ol>
+<h1 id="annexe-audit-de-la-qualité-des-données">Annexe — Audit de la
+qualité des données</h1>
+<p>Travail préparatoire (pas un livrable en soi) mené avant de figer le
+dictionnaire de données et le modèle. Réalisé avec un script Python
+(pandas) qui nettoie les trois extraits bruts et produit les fichiers
+prêts à l’import dans <code>data/staging/</code>.</p>
+<h2 id="résultats-par-source">Résultats par source</h2>
+<h3 id="cog-référentiel-communes">COG (référentiel communes)</h3>
+<ul>
+<li>207 lignes brutes, 207 après nettoyage.</li>
+<li>Aucun doublon de <code>code_insee</code>, aucune valeur manquante
+sur la clé.</li>
+<li>Confirme le nombre officiel de communes de Loire-Atlantique
+(207).</li>
+</ul>
+<h3 id="dvf-transactions">DVF (transactions)</h3>
+<ul>
+<li>79 949 lignes brutes → <strong>79 315 lignes retenues</strong>.</li>
+<li>634 lignes sans <code>valeur_fonciere</code> exploitable, retirées
+(transactions sans prix renseigné, ex. certaines expropriations).</li>
+<li>53 205 lignes sans <code>surface_reelle_bati</code> : normal, une
+partie des mutations DVF concerne des terrains non bâtis (pas une
+anomalie, mais un point d’attention pour les requêtes d’analyse —
+cf. <code>sql/05_requetes_analyse.sql</code> qui filtre sur
+<code>type_local IN (&#39;Maison&#39;,&#39;Appartement&#39;)</code> et
+<code>surface_reelle_bati &gt; 0</code>).</li>
+<li>Répartition de <code>nature_mutation</code> : très majoritairement
+des ventes classiques (75 243 sur 79 949), le reste = ventes en VEFA,
+échanges, adjudications.</li>
+<li>Répartition de <code>type_local</code> : beaucoup de lignes
+“Dépendance” (garages, caves — 21 271) et de lignes sans type (terrains,
+31 825), à filtrer selon la question posée.</li>
+<li>0 ligne avec un <code>code_insee</code> hors du référentiel COG 44 —
+bon signe de cohérence entre les deux sources.</li>
+</ul>
+<h3 id="dpe-diagnostics">DPE (diagnostics)</h3>
+<ul>
+<li>351 959 lignes brutes → <strong>351 959 lignes retenues</strong>
+(aucune ligne perdue).</li>
+<li>0 doublon sur <code>numero_dpe</code>.</li>
+<li>Étiquettes DPE et GES 100 % dans l’ensemble attendu A–G, aucune
+valeur aberrante.</li>
+<li>0 ligne avec un <code>code_insee_ban</code> hors du référentiel COG
+44.</li>
+<li><strong>Anomalie détectée</strong> : 126 lignes (0,04 %) présentent
+un artefact d’encodage dans le champ adresse — un caractère accentué mal
+ré-encodé apparaît littéralement comme une séquence du type
+<code>*u00ee</code> au lieu du caractère attendu (ex. <code>î</code>).
+L’anomalie est présente dès la réponse brute de l’API ADEME, donc en
+amont de notre traitement — c’est un défaut de qualité de la source, pas
+de notre pipeline. Volume négligeable, non corrigé (pas bloquant pour
+l’exploitation en base), mais documenté ici pour traçabilité.</li>
+</ul>
+<h2 id="anomalie-découverte-lors-des-tests-sql">Anomalie découverte lors
+des tests SQL</h2>
+<p>En testant la requête de vérification croisant
+<code>transaction_dvf</code> et <code>diagnostic_dpe</code> par commune
+(<code>sql/04_requetes_verification.sql</code>), une première version
+jointait les deux tables directement sur <code>commune</code> dans la
+même requête. Sur une commune comme Nantes (14 195 transactions × 132
+678 diagnostics), cela produit un <strong>produit cartésien</strong> de
+près de 2 milliards de lignes avant agrégation — requête bloquée en
+pratique. Corrigé en remplaçant la double jointure par deux
+sous-requêtes indépendantes
+(<code>SELECT COUNT(*) FROM ... WHERE code_insee = c.code_insee</code>),
+beaucoup plus efficace et correcte. Bon exemple concret de pourquoi le
+modèle “étoile” (deux faits reliés uniquement par la dimension commune,
+jamais entre eux) doit être interrogé prudemment.</p>
+<h2 id="valeur-aberrante-détectée-en-sortie-danalyse">Valeur aberrante
+détectée en sortie d’analyse</h2>
+<p>La requête de prix moyen au m² par commune
+(<code>sql/05_requetes_analyse.sql</code>, requête 1) fait ressortir
+Saint-Philbert-de-Grand-Lieu à 26 644 €/m², très au-dessus de toutes les
+autres communes (deuxième plus chère : Machecoul-Saint-Même à 15 360
+€/m², Nantes à 8 677 €/m²). Sur seulement 156 ventes, quelques
+transactions avec un ratio prix/surface anormal (bien mal classé en
+“Maison”/“Appartement”, erreur de saisie sur la surface, ou vente
+atypique) suffisent à faire dériver la moyenne. À investiguer avant
+toute conclusion (ex. recalcul en médiane, ou exclusion des valeurs
+extrêmes par commune) — non corrigé ici, mais signalé pour ne pas
+surinterpréter ce chiffre dans la cartographie globale.</p>
+<h2 id="vérification-de-bout-en-bout">Vérification de bout en bout</h2>
+<p>Les scripts SQL ont été testés sur une instance PostgreSQL 16 locale
+(conteneur Docker), avec :</p>
+<ul>
+<li>création des tables (<code>01_create_tables.sql</code>) : OK</li>
+<li>insertion des données de test (<code>02_insert_test_data.sql</code>)
+: OK, relations vérifiées (0 ligne orpheline)</li>
+<li>import complet des données réelles nettoyées
+(<code>03_import_donnees_reelles.sql</code>) : OK — 207 communes, 79 315
+transactions, 351 959 diagnostics, <strong>0 ligne
+orpheline</strong></li>
+<li>requêtes d’analyse (<code>05_requetes_analyse.sql</code>) : OK —
+résultats cohérents avec la problématique
+(cf. 06_base_postgresql.md)</li>
+</ul>
+</body>
+</html>

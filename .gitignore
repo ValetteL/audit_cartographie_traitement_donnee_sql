@@ -5,3 +5,4 @@ data/**/*.gz
 __pycache__/
 .venv/
 venv/
+rendu/rapport_tp.md

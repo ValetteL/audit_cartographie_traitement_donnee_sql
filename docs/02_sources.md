@@ -49,10 +49,11 @@ Champ de filtrage département confirmé dans le schéma de l'API : `code_depart
 
 ## Sources optionnelles (non retenues, envisagées en repli "100 % énergie")
 
-| Nom de la source | Organisation / origine | URL | Format | Nature | Description |
-|---|---|---|---|---|---|
-| Consommation électrique annuelle par commune et secteur d'activité | Enedis | https://data.enedis.fr/explore/dataset/consommation-electrique-par-secteur-dactivite-commune/ | CSV / API Opendatasoft | Structurée | Agrégats annuels 2011–2024 de consommation électrique, maille commune |
-| Données éCO2mix régionales consolidées | RTE — Open Data Réseaux Énergies (ODRÉ) | https://odre.opendatasoft.com/explore/dataset/eco2mix-regional-cons-def/ | CSV / API | Structurée | Production/consommation régionale par filière (Pays de la Loire), pas demi-horaire |
+**Consommation électrique annuelle par commune et secteur d'activité** — Enedis. CSV / API Opendatasoft, structurée. Agrégats annuels 2011–2024 de consommation électrique, maille commune.
+URL : https://data.enedis.fr/explore/dataset/consommation-electrique-par-secteur-dactivite-commune/
+
+**Données éCO2mix régionales consolidées** — RTE, Open Data Réseaux Énergies (ODRÉ). CSV / API, structurée. Production/consommation régionale par filière (Pays de la Loire), pas demi-horaire.
+URL : https://odre.opendatasoft.com/explore/dataset/eco2mix-regional-cons-def/
 
 ## Remarque sur data.gouv.fr
 

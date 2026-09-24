@@ -13,7 +13,7 @@ Vue d'ensemble du cheminement, des données brutes à la base PostgreSQL.
              ▼                              ▼                             ▼
    ┌────────────────────────────────────────────────────────────────────────┐
    │  Audit qualité + nettoyage (pandas)                                     │
-   │  filtrage code_insee ∉ COG 44, valeurs manquantes, doublons,            │
+   │  filtrage code_insee absent du COG 44, valeurs manquantes, doublons,    │
    │  types (cf. docs/annexe_audit_qualite.md)                               │
    └───────────────────────────────────┬──────────────────────────────────┘
                                         ▼

@@ -54,6 +54,7 @@ Analyse des principales colonnes retenues pour chaque source, restreintes au dé
 ## Clé de rapprochement entre les sources
 
 Les trois sources partagent un **code INSEE de commune à 5 caractères** :
+
 - DVF : `code_commune`
 - DPE : `code_insee_ban`
 - COG : `code_insee`

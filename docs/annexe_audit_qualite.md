@@ -5,11 +5,13 @@ Travail préparatoire (pas un livrable en soi) mené avant de figer le dictionna
 ## Résultats par source
 
 ### COG (référentiel communes)
+
 - 207 lignes brutes, 207 après nettoyage.
 - Aucun doublon de `code_insee`, aucune valeur manquante sur la clé.
 - Confirme le nombre officiel de communes de Loire-Atlantique (207).
 
 ### DVF (transactions)
+
 - 79 949 lignes brutes → **79 315 lignes retenues**.
 - 634 lignes sans `valeur_fonciere` exploitable, retirées (transactions sans prix renseigné, ex. certaines expropriations).
 - 53 205 lignes sans `surface_reelle_bati` : normal, une partie des mutations DVF concerne des terrains non bâtis (pas une anomalie, mais un point d'attention pour les requêtes d'analyse — cf. `sql/05_requetes_analyse.sql` qui filtre sur `type_local IN ('Maison','Appartement')` et `surface_reelle_bati > 0`).
@@ -18,6 +20,7 @@ Travail préparatoire (pas un livrable en soi) mené avant de figer le dictionna
 - 0 ligne avec un `code_insee` hors du référentiel COG 44 — bon signe de cohérence entre les deux sources.
 
 ### DPE (diagnostics)
+
 - 351 959 lignes brutes → **351 959 lignes retenues** (aucune ligne perdue).
 - 0 doublon sur `numero_dpe`.
 - Étiquettes DPE et GES 100 % dans l'ensemble attendu A–G, aucune valeur aberrante.
@@ -35,7 +38,8 @@ La requête de prix moyen au m² par commune (`sql/05_requetes_analyse.sql`, req
 ## Vérification de bout en bout
 
 Les scripts SQL ont été testés sur une instance PostgreSQL 16 locale (conteneur Docker), avec :
-- création des tables (`01_create_tables.sql`) ✓
-- insertion des données de test (`02_insert_test_data.sql`) ✓, relations vérifiées (0 ligne orpheline)
-- import complet des données réelles nettoyées (`03_import_donnees_reelles.sql`) ✓ : 207 communes, 79 315 transactions, 351 959 diagnostics, **0 ligne orpheline**
-- requêtes d'analyse (`05_requetes_analyse.sql`) ✓ : résultats cohérents avec la problématique (cf. [06_base_postgresql.md](06_base_postgresql.md))
+
+- création des tables (`01_create_tables.sql`) : OK
+- insertion des données de test (`02_insert_test_data.sql`) : OK, relations vérifiées (0 ligne orpheline)
+- import complet des données réelles nettoyées (`03_import_donnees_reelles.sql`) : OK — 207 communes, 79 315 transactions, 351 959 diagnostics, **0 ligne orpheline**
+- requêtes d'analyse (`05_requetes_analyse.sql`) : OK — résultats cohérents avec la problématique (cf. [06_base_postgresql.md](06_base_postgresql.md))

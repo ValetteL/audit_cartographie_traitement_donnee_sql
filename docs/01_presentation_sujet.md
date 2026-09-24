@@ -11,6 +11,7 @@ Dans le département de la **Loire-Atlantique (44)**, existe-t-il un écart de p
 ## Objectif
 
 Construire, à partir de trois jeux de données publics réels, une base de données PostgreSQL structurée permettant :
+
 - de rapprocher transactions immobilières et diagnostics énergétiques à l'échelle communale,
 - de cartographier les communes du département selon le niveau de prix et la performance énergétique du parc de logements,
 - de servir de support à des requêtes d'analyse (prix moyen au m² par étiquette DPE, par commune, etc.).
