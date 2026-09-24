@@ -1,7 +1,5 @@
 # Étape 1 — Cadrage et choix du sujet
 
-> Note sur l'énoncé : `tp_bdd.pdf` (à la racine du dépôt) est un export web tronqué — une seule page, le texte s'arrête net après "Format : CSV, Excel, JSON, SQL, etc.". Les sections au-delà de "2. Identifier les sources" (nature/structure des données, modélisation, livrables, critères d'évaluation) ne sont pas présentes dans le fichier. À re-exporter depuis Nowledgeable si besoin de les vérifier — la suite de cette documentation part de l'objectif énoncé : passer de données réelles à une modélisation structurée, puis à une base PostgreSQL.
-
 ## Sujet retenu
 
 **Immobilier × Énergie — Performance énergétique et marché immobilier des logements en Loire-Atlantique (44)**
