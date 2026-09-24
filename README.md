@@ -4,6 +4,10 @@ Sujet : **Immobilier × Énergie**, performance énergétique et marché immobil
 
 Croisement de trois sources ouvertes (DVF, DPE ADEME, COG INSEE) pour passer de données réelles à une modélisation structurée, puis à une base PostgreSQL.
 
+## Rendu
+
+Le document à soumettre est [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html)).
+
 ## Livrables
 
 Chaque livrable du TP est documenté dans [docs/](docs/) :
@@ -24,7 +28,7 @@ Annexe (travail préparatoire, pas un livrable noté) : [annexe_audit_qualite.md
 docs/    documentation de chaque livrable
 data/    extraits bruts et nettoyés (département 44) — non versionnés (cf. .gitignore)
 sql/     scripts DDL, import, requêtes de vérification et d'analyse
-tp_bdd.pdf   énoncé original
+rendu/   rapport final assemblé (PDF et HTML) — le document à soumettre
 ```
 
 ## Reproduire

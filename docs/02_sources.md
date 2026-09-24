@@ -47,14 +47,6 @@ Champ de filtrage département confirmé dans le schéma de l'API : `code_depart
 | Licence | Licence Ouverte / Etalab |
 | Récupération | Téléchargement du fichier national puis filtrage sur `dep_code = 44` (207 communes), écrit dans `data/cog_communes_44.csv` (non versionné) |
 
-## Sources optionnelles (non retenues, envisagées en repli "100 % énergie")
-
-**Consommation électrique annuelle par commune et secteur d'activité** — Enedis. CSV / API Opendatasoft, structurée. Agrégats annuels 2011–2024 de consommation électrique, maille commune.
-URL : https://data.enedis.fr/explore/dataset/consommation-electrique-par-secteur-dactivite-commune/
-
-**Données éCO2mix régionales consolidées** — RTE, Open Data Réseaux Énergies (ODRÉ). CSV / API, structurée. Production/consommation régionale par filière (Pays de la Loire), pas demi-horaire.
-URL : https://odre.opendatasoft.com/explore/dataset/eco2mix-regional-cons-def/
-
 ## Remarque sur data.gouv.fr
 
 Conservé pour le COG (fiche officielle et stable), mais pour DVF et DPE les données sont récupérées directement depuis les portails sources qui font autorité (respectivement `files.data.gouv.fr/geo-dvf` et `data.ademe.fr`), plus fiables et mieux documentés que les entrées data.gouv.fr qui les référencent.
