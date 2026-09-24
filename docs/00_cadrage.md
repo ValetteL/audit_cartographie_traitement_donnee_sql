@@ -13,8 +13,6 @@ Plutôt que de traiter "immobilier" ou "énergie" isolément, on croise les deux
 - Jeux de données réels, ouverts, mis à jour régulièrement, et bien documentés (contrairement à beaucoup d'entrées data.gouv.fr qui sont juste des redirections vers un portail source).
 - Modélisation relationnelle naturelle pour l'exercice SQL : plusieurs entités factuelles (transactions, diagnostics) reliées à une dimension géographique commune (commune/INSEE), adaptée à un MCD → MPD → PostgreSQL.
 
-**Alternative de repli (100 % énergie, si le croisement s'avère trop complexe à joindre) :** consommation électrique annuelle par commune (Enedis) + mix production/consommation régional (RTE éco2mix) — cf. [01_sources.md](01_sources.md).
-
 ## Périmètre
 
 **Département retenu : Loire-Atlantique (44)** — décidé avec le binôme.
