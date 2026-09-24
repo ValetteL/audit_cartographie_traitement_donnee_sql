@@ -20,8 +20,6 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 6. [06_base_postgresql.md](docs/06_base_postgresql.md) — base PostgreSQL : scripts et résultats de vérification
 7. [07_cartographie_globale.md](docs/07_cartographie_globale.md) — vue d'ensemble du cheminement
 
-Annexe (travail préparatoire, pas un livrable noté) : [annexe_audit_qualite.md](docs/annexe_audit_qualite.md).
-
 ## Structure du dépôt
 
 ```
@@ -35,7 +33,7 @@ rendu/   rapport final assemblé (PDF et HTML) — le document à soumettre
 
 ```bash
 # 1. Récupérer les données du département 44 (cf. docs/02_sources.md pour le détail des sources)
-# 2. Nettoyer/auditer -> data/staging/ (cf. docs/annexe_audit_qualite.md)
+# 2. Nettoyer/filtrer -> data/staging/
 # 3. Créer la base et importer
 psql -d audit_immo_energie_44 -f sql/01_create_tables.sql
 psql -d audit_immo_energie_44 -f sql/03_import_donnees_reelles.sql   # ou 02_insert_test_data.sql pour un jeu de test

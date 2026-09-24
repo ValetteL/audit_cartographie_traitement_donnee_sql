@@ -22,7 +22,7 @@ WHERE c.code_insee IS NULL;
 -- Jointure de bout en bout : nombre de transactions et de diagnostics par commune
 -- Remarque : jointure directe transaction + diagnostic sur commune = produit cartésien
 -- (une commune avec 15 000 transactions et 50 000 diagnostics donne 750M lignes avant
--- agrégation, cf. docs/annexe_audit_qualite.md). On agrège chaque table séparément.
+-- agrégation). On agrège donc chaque table séparément.
 SELECT
     c.nom_commune,
     (SELECT COUNT(*) FROM transaction_dvf t WHERE t.code_insee = c.code_insee) AS nb_transactions,

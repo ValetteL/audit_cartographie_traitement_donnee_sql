@@ -1,7 +1,7 @@
 -- Requêtes répondant à la problématique du TP (cf. docs/01_presentation_sujet.md) :
 -- existe-t-il un écart de prix entre communes selon la performance énergétique du parc ?
 --
--- Note méthodologique (cf. docs/annexe_audit_qualite.md) : dans DVF, une mutation portant
+-- Note méthodologique : dans DVF, une mutation portant
 -- sur plusieurs lots (ex. un lotissement de plusieurs maisons vendu en une seule transaction)
 -- est répartie sur plusieurs lignes qui répètent toutes la même valeur_fonciere (le prix
 -- total de la mutation, pas celui d'un lot). Diviser valeur_fonciere par la surface de

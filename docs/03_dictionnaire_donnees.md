@@ -50,13 +50,3 @@ Analyse des principales colonnes retenues pour chaque source, restreintes au dé
 | `reg_nom` | Nom de la région | varchar | `Pays de la Loire` |
 | `code_postal` | Code postal principal | char(5) | `44000` |
 | `epci_code` / `epci_nom` | Identifiant / nom de l'intercommunalité | varchar | `244400404` / `Nantes Métropole` |
-
-## Clé de rapprochement entre les sources
-
-Les trois sources partagent un **code INSEE de commune à 5 caractères** :
-
-- DVF : `code_commune`
-- DPE : `code_insee_ban`
-- COG : `code_insee`
-
-C'est la clé utilisée pour la jointure géographique dans le modèle (cf. [04_modele_conceptuel.md](04_modele_conceptuel.md)).

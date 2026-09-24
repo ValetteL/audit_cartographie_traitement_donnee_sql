@@ -51,11 +51,8 @@ COMMUNE 1 ───── N DIAGNOSTIC_DPE
 
 ## Justification des choix
 
-**Pourquoi ne pas relier directement TRANSACTION et DIAGNOSTIC_DPE ?**
-Les deux sources ne partagent pas de clé fiable au niveau du logement individuel : DVF identifie une parcelle cadastrale (`id_parcelle`), le DPE une adresse géocodée (`adresse_ban`). Un rapprochement adresse-à-adresse est possible mais nécessite un géocodage/appariement flou (fuzzy matching), hors du périmètre d'un MCD simple. Le rapprochement est donc fait **au niveau commune**, la seule clé strictement commune et fiable aux deux sources (`code_insee`), ce qui suffit pour répondre à la problématique (comparer prix et performance énergétique par commune).
-
-**Pourquoi une entité COMMUNE séparée plutôt que dupliquer les infos géographiques dans chaque table ?**
-Pour éviter la redondance (nom de commune, département, région répétés sur des dizaines de milliers de lignes) et garantir la cohérence : une seule source de vérité pour le référentiel géographique (COG), utilisée en contrainte d'intégrité référentielle sur les deux autres tables.
+- **Pas de lien direct TRANSACTION ↔ DIAGNOSTIC_DPE** : les deux sources n'ont pas de clé fiable au niveau du logement (DVF identifie une parcelle, le DPE une adresse géocodée). Le rapprochement se fait donc **au niveau commune**, seule clé fiable aux deux sources, suffisante pour répondre à la problématique.
+- **Entité COMMUNE séparée** plutôt que dupliquer les infos géographiques dans chaque table : évite la redondance et garantit une source de vérité unique (le COG), en contrainte d'intégrité référentielle sur les deux autres tables.
 
 ## Diagramme (dbdiagram.io)
 

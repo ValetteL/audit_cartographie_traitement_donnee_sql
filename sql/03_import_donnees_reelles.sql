@@ -1,5 +1,4 @@
 -- Import des données réelles nettoyées (département 44) depuis data/staging/
--- Généré par l'ETL décrit dans docs/annexe_audit_qualite.md
 -- À exécuter sur une base fraîchement créée (01_create_tables.sql), sans les données de test.
 
 \copy commune(code_insee, nom_commune, code_postal, epci_code, epci_nom, dep_code, dep_nom, reg_code, reg_nom) FROM 'data/staging/commune.csv' WITH (FORMAT csv, HEADER true);
