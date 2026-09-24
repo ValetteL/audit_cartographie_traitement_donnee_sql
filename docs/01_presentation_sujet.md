@@ -24,10 +24,6 @@ Construire, à partir de trois jeux de données publics réels, une base de donn
 
 **Département : Loire-Atlantique (44)**, 207 communes. Choix motivé par un équilibre entre pôle urbain dense (Nantes, Saint-Nazaire) et zones rurales/littorales, offrant une diversité de types de logements et de niveaux de prix, avec une volumétrie de données maîtrisable pour un TP (dizaines à centaines de milliers de lignes, pas de traitement à l'échelle nationale).
 
-## Répartition du travail avec le binôme
-
-À définir en interne — suggestion : un binôme prend en charge le pipeline DVF, l'autre le pipeline DPE, la jointure géographique (COG) et le rapprochement final étant fait à deux.
-
 ## Sommaire de la documentation
 
 1. [01_presentation_sujet.md](01_presentation_sujet.md) — ce document

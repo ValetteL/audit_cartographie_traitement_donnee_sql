@@ -1,16 +1,33 @@
 -- Requêtes répondant à la problématique du TP (cf. docs/01_presentation_sujet.md) :
 -- existe-t-il un écart de prix entre communes selon la performance énergétique du parc ?
+--
+-- Note méthodologique (cf. docs/annexe_audit_qualite.md) : dans DVF, une mutation portant
+-- sur plusieurs lots (ex. un lotissement de plusieurs maisons vendu en une seule transaction)
+-- est répartie sur plusieurs lignes qui répètent toutes la même valeur_fonciere (le prix
+-- total de la mutation, pas celui d'un lot). Diviser valeur_fonciere par la surface de
+-- chaque ligne individuellement surestime donc massivement le prix au m² de ces mutations.
+-- On agrège d'abord par id_mutation (une valeur_fonciere, somme des surfaces des lots
+-- Maison/Appartement) avant de calculer un prix au m², pour éviter ce biais.
 
--- 1. Prix moyen au m² par commune (maisons et appartements uniquement, surface > 0)
+-- 1. Prix moyen au m² par commune (agrégé par mutation, maisons et appartements, surface > 0)
+WITH mutation AS (
+    SELECT
+        t.id_mutation,
+        t.code_insee,
+        MAX(t.valeur_fonciere) AS valeur_fonciere,
+        SUM(t.surface_reelle_bati) AS surface_totale
+    FROM transaction_dvf t
+    WHERE t.type_local IN ('Maison', 'Appartement')
+      AND t.surface_reelle_bati > 0
+      AND t.nature_mutation = 'Vente'
+    GROUP BY t.id_mutation, t.code_insee
+)
 SELECT
     c.nom_commune,
-    COUNT(*) AS nb_ventes,
-    ROUND(AVG(t.valeur_fonciere / NULLIF(t.surface_reelle_bati, 0))::numeric, 0) AS prix_moyen_m2
-FROM transaction_dvf t
-JOIN commune c ON c.code_insee = t.code_insee
-WHERE t.type_local IN ('Maison', 'Appartement')
-  AND t.surface_reelle_bati > 0
-  AND t.nature_mutation = 'Vente'
+    COUNT(*) AS nb_mutations,
+    ROUND(AVG(m.valeur_fonciere / NULLIF(m.surface_totale, 0))::numeric, 0) AS prix_moyen_m2
+FROM mutation m
+JOIN commune c ON c.code_insee = m.code_insee
 GROUP BY c.nom_commune
 HAVING COUNT(*) >= 10
 ORDER BY prix_moyen_m2 DESC;
@@ -27,16 +44,25 @@ HAVING COUNT(*) >= 10
 ORDER BY pct_f_g DESC;
 
 -- 3. Vue combinée : prix moyen au m² vs part de passoires énergétiques, par commune
-WITH prix AS (
+WITH mutation AS (
     SELECT
+        t.id_mutation,
         t.code_insee,
-        COUNT(*) AS nb_ventes,
-        AVG(t.valeur_fonciere / NULLIF(t.surface_reelle_bati, 0)) AS prix_moyen_m2
+        MAX(t.valeur_fonciere) AS valeur_fonciere,
+        SUM(t.surface_reelle_bati) AS surface_totale
     FROM transaction_dvf t
     WHERE t.type_local IN ('Maison', 'Appartement')
       AND t.surface_reelle_bati > 0
       AND t.nature_mutation = 'Vente'
-    GROUP BY t.code_insee
+    GROUP BY t.id_mutation, t.code_insee
+),
+prix AS (
+    SELECT
+        m.code_insee,
+        COUNT(*) AS nb_mutations,
+        AVG(m.valeur_fonciere / NULLIF(m.surface_totale, 0)) AS prix_moyen_m2
+    FROM mutation m
+    GROUP BY m.code_insee
     HAVING COUNT(*) >= 10
 ),
 energie AS (
@@ -50,7 +76,7 @@ energie AS (
 )
 SELECT
     c.nom_commune,
-    p.nb_ventes,
+    p.nb_mutations,
     ROUND(p.prix_moyen_m2::numeric, 0) AS prix_moyen_m2,
     e.nb_diagnostics,
     ROUND(e.pct_f_g::numeric, 1) AS pct_f_g

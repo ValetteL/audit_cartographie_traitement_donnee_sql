@@ -201,8 +201,6 @@ Présentation du sujet</a>
 <li><a href="#objectif" id="toc-objectif">Objectif</a></li>
 <li><a href="#sujet-retenu" id="toc-sujet-retenu">Sujet retenu</a></li>
 <li><a href="#périmètre" id="toc-périmètre">Périmètre</a></li>
-<li><a href="#répartition-du-travail-avec-le-binôme" id="toc-répartition-du-travail-avec-le-binôme">Répartition du travail
-avec le binôme</a></li>
 <li><a href="#sommaire-de-la-documentation" id="toc-sommaire-de-la-documentation">Sommaire de la
 documentation</a></li>
 </ul></li>
@@ -268,8 +266,8 @@ qualité des données</a>
 <li><a href="#résultats-par-source" id="toc-résultats-par-source">Résultats par source</a></li>
 <li><a href="#anomalie-découverte-lors-des-tests-sql" id="toc-anomalie-découverte-lors-des-tests-sql">Anomalie découverte lors
 des tests SQL</a></li>
-<li><a href="#valeur-aberrante-détectée-en-sortie-danalyse" id="toc-valeur-aberrante-détectée-en-sortie-danalyse">Valeur aberrante
-détectée en sortie d’analyse</a></li>
+<li><a href="#valeur-aberrante-corrigée-biais-des-mutations-dvf-multi-lots" id="toc-valeur-aberrante-corrigée-biais-des-mutations-dvf-multi-lots">Valeur
+aberrante corrigée : biais des mutations DVF multi-lots</a></li>
 <li><a href="#vérification-de-bout-en-bout" id="toc-vérification-de-bout-en-bout">Vérification de bout en
 bout</a></li>
 </ul></li>
@@ -312,11 +310,6 @@ Saint-Nazaire) et zones rurales/littorales, offrant une diversité de
 types de logements et de niveaux de prix, avec une volumétrie de données
 maîtrisable pour un TP (dizaines à centaines de milliers de lignes, pas
 de traitement à l’échelle nationale).</p>
-<h2 id="répartition-du-travail-avec-le-binôme">Répartition du travail
-avec le binôme</h2>
-<p>À définir en interne — suggestion : un binôme prend en charge le
-pipeline DVF, l’autre le pipeline DPE, la jointure géographique (COG) et
-le rapprochement final étant fait à deux.</p>
 <h2 id="sommaire-de-la-documentation">Sommaire de la documentation</h2>
 <ol type="1">
 <li>01_presentation_sujet.md — ce document</li>
@@ -1215,23 +1208,33 @@ sont valides.</li>
 </ul>
 <h2 id="résultat-des-requêtes-danalyse">Résultat des requêtes
 d’analyse</h2>
-<p>Sur les données réelles, le croisement prix moyen au m² / part de
-logements F-G par commune (<code>sql/05_requetes_analyse.sql</code>,
-requête 3) fait apparaître une tendance : les communes les plus chères
-et les plus urbaines/littorales (Nantes 8 677 €/m² et 5,4 % de F-G,
-Saint-Herblain 4 108 €/m² et 3,0 %, Orvault 3 392 €/m² et 3,5 %) ont
-proportionnellement moins de logements énergivores que les communes
-rurales les moins chères (Juigné-des-Moutiers 1 078 €/m² et 35,7 % de
-F-G, Soulvache 1 001 €/m² et 25,7 %, Grand-Auverné 1 307 €/m² et 20,4
-%).</p>
+<p>Le prix moyen au m² est calculé au niveau de la mutation (et non de
+la ligne brute) pour éviter un biais des mutations DVF à plusieurs lots
+— cf. annexe_audit_qualite.md pour le détail du problème rencontré et de
+la correction apportée.</p>
+<p>Sur les données réelles corrigées, le croisement prix moyen au m² /
+part de logements F-G par commune
+(<code>sql/05_requetes_analyse.sql</code>, requête 3) fait apparaître
+deux tendances :</p>
+<ul>
+<li>Les communes les plus chères du département sont ses pôles littoraux
+(La Baule-Escoublac 6 536 €/m², Pornichet 5 647 €/m², Le Pouliguen 5 290
+€/m², Pornic 4 840 €/m²), suivies de Nantes (3 778 €/m², rang médian
+malgré son statut de préfecture) et de sa périphérie (Saint-Herblain 2
+793 €/m², Orvault 3 177 €/m²).</li>
+<li>Les communes rurales les moins chères concentrent la plus forte part
+de logements F-G : Juigné-des-Moutiers (892 €/m², 35,7 % de F-G), La
+Chapelle-Glain (921 €/m², 19,4 %), Soulvache (1 015 €/m², 25,7 %),
+Grand-Auverné (1 102 €/m², 20,4 %).</li>
+</ul>
 <p>Cette observation va dans le sens de la problématique posée
-(01_presentation_sujet.md) mais reste à nuancer : petites communes
-rurales = faibles effectifs (parfois &lt;30 ventes), et un parc ancien
-plus présent en zone rurale peut expliquer à la fois le prix bas et la
-mauvaise étiquette, sans lien de causalité direct entre les deux. Une
-valeur aberrante (Saint-Philbert-de-Grand-Lieu, 26 644 €/m²) a par
-ailleurs été identifiée et documentée dans l’annexe qualité — à traiter
-avant toute cartographie définitive.</p>
+(01_presentation_sujet.md) mais reste à nuancer : les communes rurales
+les moins chères ont de faibles effectifs (souvent 10 à 20 mutations),
+et un parc ancien plus présent en zone rurale peut expliquer à la fois
+le prix bas et la mauvaise étiquette, sans lien de causalité direct
+entre les deux. Le prix des communes littorales, à l’inverse, reflète
+surtout la rareté foncière (proximité de la mer) plus que la performance
+énergétique du bâti.</p>
 <h1 id="cartographie-globale">7. Cartographie globale</h1>
 <p>Vue d’ensemble du cheminement, des données brutes à la base
 PostgreSQL.</p>
@@ -1286,8 +1289,10 @@ diagnostic, jugé trop incertain avec les clés disponibles
 testée de bout en bout avec les données réelles (0 ligne
 orpheline).</li>
 <li><strong>L’analyse finale</strong> répond à la problématique initiale
-à l’échelle communale, avec ses limites documentées (petits effectifs,
-valeur aberrante, corrélation ≠ causalité).</li>
+à l’échelle communale, après correction d’un biais de calcul sur les
+mutations DVF multi-lots (cf. annexe_audit_qualite.md), avec ses limites
+restantes documentées (petits effectifs sur les communes rurales,
+corrélation ≠ causalité).</li>
 </ol>
 <h1 id="annexe-audit-de-la-qualité-des-données">Annexe — Audit de la
 qualité des données</h1>
@@ -1357,19 +1362,41 @@ sous-requêtes indépendantes
 beaucoup plus efficace et correcte. Bon exemple concret de pourquoi le
 modèle “étoile” (deux faits reliés uniquement par la dimension commune,
 jamais entre eux) doit être interrogé prudemment.</p>
-<h2 id="valeur-aberrante-détectée-en-sortie-danalyse">Valeur aberrante
-détectée en sortie d’analyse</h2>
-<p>La requête de prix moyen au m² par commune
-(<code>sql/05_requetes_analyse.sql</code>, requête 1) fait ressortir
+<h2 id="valeur-aberrante-corrigée-biais-des-mutations-dvf-multi-lots">Valeur
+aberrante corrigée : biais des mutations DVF multi-lots</h2>
+<p>La première version de la requête de prix moyen au m² par commune
+(<code>sql/05_requetes_analyse.sql</code>, requête 1) faisait ressortir
 Saint-Philbert-de-Grand-Lieu à 26 644 €/m², très au-dessus de toutes les
-autres communes (deuxième plus chère : Machecoul-Saint-Même à 15 360
-€/m², Nantes à 8 677 €/m²). Sur seulement 156 ventes, quelques
-transactions avec un ratio prix/surface anormal (bien mal classé en
-“Maison”/“Appartement”, erreur de saisie sur la surface, ou vente
-atypique) suffisent à faire dériver la moyenne. À investiguer avant
-toute conclusion (ex. recalcul en médiane, ou exclusion des valeurs
-extrêmes par commune) — non corrigé ici, mais signalé pour ne pas
-surinterpréter ce chiffre dans la cartographie globale.</p>
+autres communes (deuxième plus chère à l’époque : Machecoul-Saint-Même à
+15 360 €/m², Nantes à 8 677 €/m²).</p>
+<p><strong>Cause identifiée</strong> : dans DVF, une mutation portant
+sur plusieurs lots (ex. un lotissement de plusieurs maisons vendu par un
+promoteur en une seule transaction) est éclatée sur plusieurs lignes du
+fichier source — une ligne par lot — mais <code>valeur_fonciere</code>
+(le prix total de la mutation) est <strong>répété à l’identique sur
+chaque ligne</strong>, pas réparti. La requête initiale divisait cette
+valeur totale par la surface de chaque ligne individuellement, ce qui
+démultiplie artificiellement le prix au m² dès qu’une mutation comporte
+plusieurs lots.</p>
+<p>Exemple concret trouvé sur Saint-Philbert-de-Grand-Lieu : la mutation
+<code>2025-583422</code> (5 591 000 €, vente d’un lotissement) apparaît
+sur 82 lignes du fichier department 44, chacune avec la même
+<code>valeur_fonciere</code> de 5 591 000 €. Le calcul naïf traitait
+donc 82 fois cette même vente comme si chaque maison valait
+individuellement 5,6 M€. Ce n’est pas un cas isolé : sur les 31 633
+mutations distinctes du département, 1 877 comportent plus de 5 lignes —
+le biais affecte donc l’ensemble du classement, pas seulement la commune
+la plus visible.</p>
+<p><strong>Correction appliquée</strong> : la requête agrège désormais
+d’abord par <code>id_mutation</code> (une valeur foncière par mutation,
+somme des surfaces des lots <code>Maison</code>/<code>Appartement</code>
+de cette mutation), puis calcule le prix au m² sur cette base, avant de
+moyenner par commune. Résultat : Saint-Philbert-de-Grand-Lieu retombe à
+2 347 €/m² (rang médian, cohérent avec ses voisines), et le classement
+general devient dominé par les communes littorales (La Baule-Escoublac 6
+536 €/m², Pornichet 5 647 €/m², Le Pouliguen 5 290 €/m²), un résultat
+nettement plus plausible pour le marché immobilier du 44. Voir
+06_base_postgresql.md pour les chiffres à jour.</p>
 <h2 id="vérification-de-bout-en-bout">Vérification de bout en bout</h2>
 <p>Les scripts SQL ont été testés sur une instance PostgreSQL 16 locale
 (conteneur Docker), avec :</p>
