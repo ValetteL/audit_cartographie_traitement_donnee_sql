@@ -1,6 +1,6 @@
 # Annexe — Audit de la qualité des données
 
-Travail préparatoire (pas un livrable en soi) mené avant de figer le dictionnaire de données et le modèle. Réalisé avec un script Python (pandas) qui nettoie les trois extraits bruts et produit les fichiers prêts à l'import dans `data/staging/`.
+Travail préparatoire (pas un livrable en soi), mené une fois le dictionnaire de données ([03_dictionnaire_donnees.md](03_dictionnaire_donnees.md)) et le modèle ([04_modele_conceptuel.md](04_modele_conceptuel.md), [05_modele_logique.md](05_modele_logique.md)) figés — la structure cible est définie en amont à partir de l'analyse des colonnes réelles, puis les données brutes sont nettoyées et filtrées pour correspondre à ce modèle, plutôt que l'inverse. Réalisé avec un script Python (pandas) qui nettoie les trois extraits bruts et produit les fichiers prêts à l'import dans `data/staging/`.
 
 ## Résultats par source
 
