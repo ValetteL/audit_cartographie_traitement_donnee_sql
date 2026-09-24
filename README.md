@@ -22,7 +22,3 @@ data/    extraits de données (département 44) — non versionnés si volumineu
 sql/     scripts DDL / import / requêtes d'analyse
 tp_bdd.pdf   énoncé original (export tronqué, cf. docs/00_cadrage.md)
 ```
-
-## Note sur l'énoncé
-
-`tp_bdd.pdf` est un export web tronqué (une seule page, coupé en cours de section 2). Voir [docs/00_cadrage.md](docs/00_cadrage.md) pour le détail.
