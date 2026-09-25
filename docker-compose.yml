@@ -110,12 +110,37 @@ services:
       - datalake_data:/datalake
     networks: [tp2]
 
+  # PostgreSQL n'exécute les scripts de docker-entrypoint-initdb.d/ (dont
+  # sql/06_create_flux_table.sql) qu'à la toute première initialisation d'un
+  # volume vide. Sur un volume déjà initialisé par le TP1 (avant l'existence
+  # du TP2), ce script ne serait jamais rejoué et diagnostic_dpe_flux
+  # n'existerait pas — silencieusement, sans erreur visible pour qui lance
+  # juste `docker compose up -d`. CREATE TABLE IF NOT EXISTS le garantit
+  # présent dans tous les cas, indépendamment de l'état du volume.
+  flux-table-init:
+    image: postgres:16
+    container_name: tp2_flux_table_init
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./sql/06_create_flux_table.sql:/flux_table.sql:ro
+    # Retry : le healthcheck de `db` peut se déclarer "healthy" juste avant le
+    # redémarrage interne que Postgres effectue après son tout premier initdb,
+    # ce qui refuse la connexion un court instant malgré `service_healthy`.
+    command: >
+      sh -c "until psql -h db -U postgres -d audit_immo_energie_44 -f /flux_table.sql; do
+      echo 'en attente de PostgreSQL...'; sleep 2; done"
+    networks: [tp2]
+
   spark:
     build: ./spark
     container_name: tp2_spark
     depends_on:
-      db:
-        condition: service_healthy
+      flux-table-init:
+        condition: service_completed_successfully
       aggregator:
         condition: service_started
     environment:
