@@ -17,7 +17,8 @@
           "format": "table",
           "refId": "A"
         }
-      ]
+      ],
+      "transformations": [{ "id": "rowsToFields", "options": {} }]
     },
     {
       "id": 2,
@@ -31,7 +32,8 @@
           "format": "table",
           "refId": "A"
         }
-      ]
+      ],
+      "transformations": [{ "id": "rowsToFields", "options": {} }]
     },
     {
       "id": 3,
@@ -50,9 +52,10 @@
     {
       "id": 4,
       "title": "10 communes les plus chères (prix moyen €/m², flux temps réel)",
-      "type": "bargauge",
+      "type": "barchart",
       "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
       "fieldConfig": { "defaults": { "unit": "currencyEUR" }, "overrides": [] },
+      "options": { "xTickLabelRotation": -45 },
       "datasource": { "type": "postgres", "uid": "PostgreSQL" },
       "targets": [
         {
