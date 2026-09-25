@@ -4,6 +4,7 @@ subtitle: "Prolongement du TP1 — Immobilier × Énergie, Loire-Atlantique (44)
 author:
   - Louis Valette
   - Alexis Fouquet
+  - Ruben Cofflard
 toc: true
 toc-depth: 1
 geometry: margin=2.2cm
