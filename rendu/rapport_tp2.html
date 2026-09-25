@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Louis Valette" />
+  <meta name="author" content="Alexis Fouquet" />
+  <title>TP2 — Pipeline data temps réel &amp; plateforme data</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">:root {
+--fg: #1a1a1a;
+--muted: #5a5a5a;
+--accent: #1a56db;
+--border: #d8dde3;
+--code-bg: #f4f6f8;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+max-width: 880px;
+margin: 0 auto;
+padding: 2.5rem 1.5rem 6rem;
+font-family: "Segoe UI", Calibri, Arial, sans-serif;
+line-height: 1.55;
+color: var(--fg);
+font-size: 16px;
+}
+img { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { line-height: 1.25; }
+h1 { font-size: 1.9rem; margin-top: 3rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.4rem; }
+h1:first-of-type { margin-top: 0; border-bottom: none; padding-bottom: 0; }
+h2 { font-size: 1.35rem; margin-top: 2.2rem; color: #0d1b3e; }
+h3 { font-size: 1.1rem; margin-top: 1.6rem; }
+h4 { font-size: 1rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+p { margin: 0.7rem 0; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: 0.25rem 0; }
+table {
+border-collapse: collapse;
+width: 100%;
+margin: 1rem 0 1.5rem;
+font-size: 0.92rem;
+}
+th, td {
+border: 1px solid var(--border);
+padding: 0.45rem 0.6rem;
+text-align: left;
+vertical-align: top;
+}
+th { background: #eef2f9; font-weight: 600; }
+tr:nth-child(even) td { background: #fafbfc; }
+code {
+font-family: Consolas, "SF Mono", monospace;
+background: var(--code-bg);
+padding: 0.1em 0.35em;
+border-radius: 3px;
+font-size: 0.88em;
+}
+pre {
+background: var(--code-bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 0.9rem 1rem;
+overflow-x: auto;
+font-size: 0.85rem;
+line-height: 1.45;
+}
+pre code { background: none; padding: 0; }
+blockquote {
+border-left: 4px solid var(--accent);
+margin: 1rem 0;
+padding: 0.3rem 1rem;
+color: var(--muted);
+background: #f7f9fc;
+}
+hr { border: none; border-top: 1px solid var(--border); margin: 2.2rem 0; }
+
+#nav-fil-ariane {
+position: fixed;
+top: 0;
+left: 0;
+z-index: 60;
+max-width: calc(100vw - 2rem);
+}
+#breadcrumb-label {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+background: rgba(255, 255, 255, 0.97);
+border: 1px solid var(--border);
+border-top: none;
+border-left: none;
+border-bottom-right-radius: 10px;
+padding: 0.55rem 1.1rem;
+font-size: 0.85rem;
+color: var(--muted);
+box-shadow: 0 2px 8px rgba(20, 30, 60, 0.06);
+cursor: pointer;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+max-width: 100%;
+transition: color 0.15s ease;
+}
+#breadcrumb-label::before { content: "☰"; opacity: 0.55; font-size: 0.85em; }
+#breadcrumb-label .crumb-sep { opacity: 0.45; }
+#breadcrumb-label .crumb-current { color: var(--accent); font-weight: 600; }
+#nav-fil-ariane:hover #breadcrumb-label,
+#nav-fil-ariane.is-open #breadcrumb-label { color: var(--accent); }
+#TOC {
+width: 280px;
+max-width: calc(100vw - 2rem);
+max-height: 0;
+opacity: 0;
+overflow: hidden;
+pointer-events: none;
+background: #fff;
+border: 1px solid var(--border);
+border-top: none;
+border-radius: 0 12px 12px 0;
+box-shadow: 0 10px 26px rgba(20, 30, 60, 0.12);
+padding: 0 1.2rem;
+font-size: 0.88rem;
+transition: max-height 0.22s ease, opacity 0.16s ease, padding 0.22s ease;
+}
+#nav-fil-ariane:hover #TOC,
+#nav-fil-ariane.is-open #TOC {
+max-height: 70vh;
+opacity: 1;
+pointer-events: auto;
+overflow-y: auto;
+padding: 0.6rem 1.2rem 1rem;
+}
+#TOC ul { list-style: none; padding-left: 0.9rem; margin: 0.2rem 0; }
+#TOC > ul { padding-left: 0; }
+#TOC a {
+display: block;
+color: var(--muted);
+padding: 0.28rem 0.6rem;
+margin: 0.05rem 0;
+border-radius: 5px;
+border-left: 2px solid transparent;
+line-height: 1.35;
+}
+#TOC a:hover { background: #eaeef5; text-decoration: none; }
+#TOC a.active {
+color: var(--accent);
+font-weight: 600;
+border-left-color: var(--accent);
+background: #e7edfb;
+}
+.title { font-size: 2.1rem; margin-bottom: 0.2rem; }
+.subtitle { font-size: 1.2rem; color: var(--muted); font-weight: 400; margin-top: 0; }
+.author, .date { color: var(--muted); }
+@media print {
+#nav-fil-ariane { display: none; }
+}
+@media (max-width: 600px) {
+body { font-size: 15px; padding: 1.5rem 1rem 4rem; }
+table { font-size: 0.82rem; }
+#breadcrumb-label { font-size: 0.78rem; padding: 0.45rem 0.8rem; }
+}
+</style>
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TP2 — Pipeline data temps réel &amp; plateforme
+data</h1>
+<p class="subtitle">Prolongement du TP1 — Immobilier × Énergie,
+Loire-Atlantique (44)</p>
+<p class="author">Louis Valette</p>
+<p class="author">Alexis Fouquet</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#contexte-et-architecture" id="toc-contexte-et-architecture">1. Contexte et architecture</a></li>
+<li><a href="#sources" id="toc-sources">2. Sources</a></li>
+<li><a href="#logique-dagrégation" id="toc-logique-dagrégation">3.
+Logique d’agrégation</a></li>
+<li><a href="#data-lake" id="toc-data-lake">4. Data lake</a></li>
+<li><a href="#nettoyage-pyspark" id="toc-nettoyage-pyspark">5. Nettoyage
+PySpark</a></li>
+<li><a href="#observabilité-prometheus-grafana" id="toc-observabilité-prometheus-grafana">6. Observabilité (Prometheus +
+Grafana)</a></li>
+<li><a href="#data-visualization" id="toc-data-visualization">7. Data
+visualization</a></li>
+<li><a href="#résultats-de-la-vérification" id="toc-résultats-de-la-vérification">8. Résultats de la
+vérification</a>
+<ul>
+<li><a href="#comment-reproduire" id="toc-comment-reproduire">Comment
+reproduire</a></li>
+<li><a href="#comment-vérifier" id="toc-comment-vérifier">Comment
+vérifier</a></li>
+<li><a href="#ports-exposés" id="toc-ports-exposés">Ports
+exposés</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="contexte-et-architecture">1. Contexte et architecture</h1>
+<p>Le TP1 a construit une base PostgreSQL statique (import unique,
+département 44) croisant transactions immobilières (DVF) et diagnostics
+de performance énergétique (DPE ADEME). Le TP2 prolonge ce travail avec
+un pipeline <strong>temps réel</strong> : ingestion via Kafka, data lake
+brut, nettoyage PySpark, rechargement continu dans la même base
+PostgreSQL, supervision technique et dashboard métier.</p>
+<pre><code>                    ┌──────────────┐
+  data/staging/  →  │ source2-     │  →  raw/source2/ (data lake)
+  dvf_44.csv         │ loader       │      dvf_44.csv, prix_moyen_commune.csv
+  (TP1, one-shot)    └──────────────┘
+
+  data/staging/       ┌──────────────┐      ┌───────┐      ┌────────────┐
+  diagnostic_dpe.csv →│ api-producer │  →   │ Kafka │  →   │ aggregator │
+  (backfill)          │ + API ADEME  │      │ topic │      │            │
+                       │ (live)       │      │dpe-   │      └─────┬──────┘
+                       └──────────────┘      │flux-44│            │
+                                              └───────┘    raw/api/dpe_raw.ndjson
+                                                            aggregated/dpe_enrichi.ndjson
+                                                            (jointure avec prix_moyen_commune)
+                                                                    │
+                                                                    ▼
+                                                            ┌───────────────┐
+                                                            │ spark (batch  │
+                                                            │ toutes les    │
+                                                            │ 60s)          │
+                                                            └───────┬───────┘
+                                                                    ▼
+                                                    PostgreSQL : diagnostic_dpe_flux
+                                                                    │
+                                                                    ▼
+                                          Grafana (2 dashboards provisionnés : observabilité + dataviz métier)
+                                          datasources : Prometheus (métriques) + PostgreSQL (données métier)</code></pre>
+<h1 id="sources">2. Sources</h1>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Source</th>
+<th>Nature</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>API ADEME <code>dpe03existant</code> (diagnostics de performance
+énergétique)</td>
+<td>API HTTP, alimentée sur Kafka par <code>api-producer</code></td>
+<td>Flux principal temps réel</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DVF (transactions immobilières, département 44 — déjà utilisée en
+TP1)</td>
+<td>CSV, chargée en un lot par <code>source2-loader</code></td>
+<td>Source complémentaire, sert à enrichir le flux 1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pourquoi ce choix</strong> : les deux sources et le lien
+entre elles reprennent exactement la problématique du TP1 (marché
+immobilier × performance énergétique), pour rester cohérent avec la
+modélisation déjà posée. Réutiliser DVF évite une nouvelle source à
+qualifier de zéro et permet de vérifier la cohérence des deux TP par
+recoupement des mêmes indicateurs (section 8).</p>
+<p><strong>Pourquoi une phase de « backfill »</strong> : l’API ADEME ne
+produit que quelques nouveaux DPE par semaine pour le seul département
+44 — insuffisant pour observer un flux en conditions de démo courte.
+<code>api-producer</code> rejoue donc d’abord les 352k DPE déjà
+collectés en TP1 à débit maîtrisé (200 événements/s, réglable via
+<code>BACKFILL_RATE_PER_SEC</code>), marqués
+<code>source_flux=backfill</code>, puis bascule en interrogation
+continue de l’API réelle (<code>source_flux=live</code>, toutes les
+<code>POLL_INTERVAL_SECONDS</code>) à partir d’un filigrane
+(<em>watermark</em>) persisté sur disque. Le backfill ne s’exécute
+qu’une fois : un marqueur (<code>/state/backfill_done</code>) évite de
+le rejouer à chaque redémarrage du conteneur.</p>
+<h1 id="logique-dagrégation">3. Logique d’agrégation</h1>
+<p><code>aggregation/aggregator.py</code> consomme le topic Kafka
+<code>dpe-flux-44</code>, dépose chaque événement tel quel dans
+<code>raw/api/dpe_raw.ndjson</code> (couche brute, non filtrée), puis
+l’enrichit avec le prix moyen au m² de la commune du diagnostic (calculé
+par <code>source2-loader</code> à partir de DVF, avec la même correction
+que le TP1 : agrégation par mutation avant calcul du prix/m², pour ne
+pas compter plusieurs fois la valeur d’une mutation à plusieurs lots) et
+dépose le résultat dans <code>aggregated/dpe_enrichi.ndjson</code>.</p>
+<p><strong>Justification métier</strong> : un DPE seul indique une
+étiquette énergétique ; associé au prix moyen au m² de sa commune, il
+permet de resituer un logement par rapport à son marché local — c’est la
+même question que celle du TP1 (est-ce que les logements F-G se vendent
+moins cher ?), mais évaluée en continu plutôt que sur un instantané.</p>
+<h1 id="data-lake">4. Data lake</h1>
+<p>Le sujet propose une organisation MinIO (S3). <strong>MinIO a fermé
+ses images Docker officielles derrière une authentification</strong>
+(Docker Hub et quay.io renvoient tous deux 401 au moment du TP), ce qui
+rend un <code>docker compose up</code> reproductible impossible sans
+compte préalable. Le data lake est donc un volume Docker nommé
+(<code>datalake_data</code>), organisé exactement selon l’arborescence
+donnée par l’énoncé :</p>
+<pre><code>raw/api/          dpe_raw.ndjson          — flux Kafka brut, non filtré
+raw/source2/       dvf_44.csv, prix_moyen_commune.csv
+aggregated/        dpe_enrichi.ndjson      — flux enrichi, avant nettoyage</code></pre>
+<h1 id="nettoyage-pyspark">5. Nettoyage PySpark</h1>
+<p><code>spark/jobs/clean_and_load.py</code> tourne en boucle
+(<code>local[*]</code>, pas de cluster nécessaire), relit
+<code>aggregated/dpe_enrichi.ndjson</code> toutes les 60 secondes et
+applique :</p>
+<ul>
+<li>contrôle de type (surfaces, prix, dates) ;</li>
+<li>rejet des étiquettes DPE/GES hors A-G ;</li>
+<li>rejet des lignes sans identifiant ou commune ;</li>
+<li>déduplication sur <code>numero_dpe</code> ;</li>
+<li>rejet des communes hors référentiel (jointure avec la table
+<code>commune</code> du TP1, réutilisée telle quelle).</li>
+</ul>
+<p>Le résultat est chargé dans PostgreSQL par upsert
+(<code>INSERT ... ON CONFLICT (numero_dpe) DO NOTHING</code>, via
+<code>psycopg2</code>) dans la table <code>diagnostic_dpe_flux</code>
+(<a href="../sql/06_create_flux_table.sql">sql/06_create_flux_table.sql</a>),
+dont la clé étrangère <code>code_insee → commune</code> garantit la
+cohérence avec le modèle du TP1.</p>
+<p><strong>Choix technique</strong> : chargement via
+<code>psycopg2</code> plutôt que le writer JDBC de Spark, pour éviter de
+gérer un driver JDBC PostgreSQL supplémentaire dans l’image — inutile
+ici vu le volume (dizaines de milliers de lignes par cycle, pas un usage
+big data).</p>
+<p><strong>Robustesse</strong> : PostgreSQL n’exécute les scripts
+d’initialisation qu’à la toute première création d’un volume vide. Pour
+garantir <code>diagnostic_dpe_flux</code> quel que soit l’état du volume
+(par exemple un volume déjà initialisé par le TP1, avant l’existence de
+cette table), un service dédié (<code>flux-table-init</code>,
+<code>CREATE TABLE IF NOT EXISTS</code>, avec retry) s’exécute avant
+Spark à chaque démarrage — testé en reproduisant le cas exact (table
+supprimée manuellement sur un volume TP1 existant, puis
+<code>docker compose up -d</code> sans réinitialisation : la table est
+recréée automatiquement).</p>
+<h1 id="observabilité-prometheus-grafana">6. Observabilité (Prometheus +
+Grafana)</h1>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Cible</th>
+<th>Exportateur</th>
+<th>Ce qu’il expose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conteneurs (CPU, mémoire, réseau)</td>
+<td>cAdvisor</td>
+<td>Infra — remplace node-exporter, écarté du périmètre : le TP tourne
+sur une seule machine, pas un cluster à superviser au niveau host</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td><code>postgres-exporter</code></td>
+<td>Connexions actives, disponibilité, taille de la base</td>
+</tr>
+<tr>
+<td><code>api-producer</code>, <code>aggregator</code>,
+<code>spark</code></td>
+<td><code>prometheus_client</code> (Python), un exporteur HTTP par
+service</td>
+<td>Métriques métier du pipeline</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indicateur Raw vs Clean</strong> (obligatoire) :
+<code>raw_records_total</code> (exposé par <code>aggregator</code>,
+volume déposé dans <code>raw/api/</code>) comparé à
+<code>clean_records_total</code> (exposé par <code>spark</code>,
+<code>COUNT(*)</code> réel sur <code>diagnostic_dpe_flux</code>). Les
+deux valeurs partent du volume réellement persisté (fichier / base), pas
+d’un compteur en mémoire remis à zéro au redémarrage, pour rester
+comparables dans la durée. <code>raw ≥ clean</code> en permanence :
+l’écart mesure le nettoyage (données rejetées) et le retard du cycle
+Spark (60s) sur le flux Kafka.</p>
+<p>Dashboard Grafana provisionné automatiquement (aucune étape manuelle)
+: <a href="../monitoring/grafana/provisioning/dashboards/tp2_overview.json">monitoring/grafana/provisioning/dashboards/tp2_overview.json</a>,
+8 panels (Raw vs Clean, taux de nettoyage, débit du producteur par
+source, connexions/disponibilité/taille PostgreSQL, CPU/mémoire par
+conteneur).</p>
+<h1 id="data-visualization">7. Data visualization</h1>
+<p>Le sujet demande un dashboard de data visualization sans imposer
+d’outil. Plutôt qu’un second outil dédié (ex. Metabase), la dataviz
+métier est un second dashboard Grafana (<a href="../monitoring/grafana/provisioning/dashboards/tp2_metier.json">monitoring/grafana/provisioning/dashboards/tp2_metier.json</a>),
+branché sur un second datasource PostgreSQL (en plus du datasource
+Prometheus utilisé pour l’observabilité) : répartition des étiquettes
+DPE reçues, origine backfill/live, volume traité dans le temps, communes
+les plus chères, part de logements F-G par tranche de prix, derniers DPE
+reçus. Provisionné au même titre que le dashboard technique — pas
+d’étape manuelle, alors qu’un outil séparé (Metabase notamment) demande
+de construire son dashboard à la main dans son UI au premier
+lancement.</p>
+<h1 id="résultats-de-la-vérification">8. Résultats de la
+vérification</h1>
+<p>Stack testée de bout en bout à froid
+(<code>docker compose down -v &amp;&amp; docker compose up -d</code>),
+sur trois machines et réseaux différents.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Résultat observé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source 2 (DVF)</td>
+<td>Chargée en un lot, prix moyen calculé pour 207 communes, 0
+erreur</td>
+</tr>
+<tr>
+<td>Table <code>diagnostic_dpe_flux</code></td>
+<td>Créée automatiquement, y compris sur un volume déjà initialisé par
+le TP1</td>
+</tr>
+<tr>
+<td>Kafka (<code>dpe-flux-44</code>)</td>
+<td>Backfill complet : 351 959 événements publiés</td>
+</tr>
+<tr>
+<td>Data lake</td>
+<td><code>raw/api/</code> et <code>aggregated/</code> : mêmes volumes en
+parallèle (cohérence vérifiée)</td>
+</tr>
+<tr>
+<td>PostgreSQL (<code>diagnostic_dpe_flux</code>)</td>
+<td>351 959 lignes chargées après backfill complet</td>
+</tr>
+<tr>
+<td>Cohérence Raw vs Clean</td>
+<td>Vérifiée à la source (fichiers + base, pas seulement les métriques)
+: raw ≥ clean à tout instant</td>
+</tr>
+<tr>
+<td>Prometheus</td>
+<td>5/5 cibles <code>UP</code> (cadvisor, postgres, api-producer,
+aggregator, spark)</td>
+</tr>
+<tr>
+<td>Grafana</td>
+<td>2 dashboards et 2 datasources (Prometheus, PostgreSQL) provisionnés
+automatiquement ; requêtes testées via l’API de Grafana avec des données
+réelles</td>
+</tr>
+</tbody>
+</table>
+<p>Le classement des communes les plus chères, recalculé en continu par
+le flux temps réel, retombe sur les mêmes valeurs que le TP1 (La
+Baule-Escoublac 6 536 €/m², Pornichet 5 636 €/m², Nantes 3 777 €/m²) —
+confirmation croisée entre les deux TP.</p>
+<h2 id="comment-reproduire">Comment reproduire</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
+<p>Démarre l’ensemble (TP1 + TP2) : base PostgreSQL et son import TP1,
+data lake, Kafka, le pipeline complet (producteur, agrégateur, Spark),
+Prometheus, Grafana et cAdvisor — sans étape manuelle ni accès réseau
+obligatoire (le backfill utilise les CSV déjà versionnés ; seule la
+phase « live » de <code>api-producer</code> appelle l’API ADEME, avec
+repli silencieux si elle est inaccessible).</p>
+<h2 id="comment-vérifier">Comment vérifier</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Composant</th>
+<th>Comment vérifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka</td>
+<td><code>docker exec tp2_kafka /opt/kafka/bin/kafka-get-offsets.sh --bootstrap-server localhost:19092 --topic dpe-flux-44</code>
+→ nombre de messages produits</td>
+</tr>
+<tr>
+<td>Data lake</td>
+<td><code>docker exec tp2_aggregator sh -c &quot;wc -l /datalake/raw/api/dpe_raw.ndjson /datalake/aggregated/dpe_enrichi.ndjson&quot;</code></td>
+</tr>
+<tr>
+<td>PostgreSQL (flux)</td>
+<td><code>docker exec tp_audit_44_pg psql -U postgres -d audit_immo_energie_44 -c &quot;SELECT COUNT(*) FROM diagnostic_dpe_flux;&quot;</code></td>
+</tr>
+<tr>
+<td>Prometheus</td>
+<td>http://localhost:9090/targets — les 5 cibles doivent être
+<code>UP</code></td>
+</tr>
+<tr>
+<td>Grafana</td>
+<td>http://localhost:3000 (admin/admin, ou accès anonyme activé) —
+dashboards <em>TP2 — Pipeline temps réel</em> et <em>TP2 — Dataviz
+métier</em></td>
+</tr>
+<tr>
+<td>Métriques brutes</td>
+<td>http://localhost:8001/metrics (producteur),
+http://localhost:8002/metrics (agrégateur),
+http://localhost:8003/metrics (Spark)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ports-exposés">Ports exposés</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Port</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5432</td>
+<td>PostgreSQL</td>
+</tr>
+<tr>
+<td>9092</td>
+<td>Kafka (accès externe)</td>
+</tr>
+<tr>
+<td>8001 / 8002 / 8003</td>
+<td>Métriques Prometheus : producteur / agrégateur / Spark</td>
+</tr>
+<tr>
+<td>8080</td>
+<td>cAdvisor</td>
+</tr>
+<tr>
+<td>9187</td>
+<td>postgres-exporter</td>
+</tr>
+<tr>
+<td>9090</td>
+<td>Prometheus</td>
+</tr>
+<tr>
+<td>3000</td>
+<td>Grafana</td>
+</tr>
+</tbody>
+</table>
+<script>
+(function () {
+  var toc = document.getElementById('TOC');
+  if (!toc) return;
+
+  // Wrap the pandoc-generated #TOC in a hover-reveal breadcrumb widget.
+  var wrapper = document.createElement('div');
+  wrapper.id = 'nav-fil-ariane';
+  var label = document.createElement('div');
+  label.id = 'breadcrumb-label';
+  label.innerHTML = '<span class="crumb-current">…</span>';
+
+  toc.parentNode.insertBefore(wrapper, toc);
+  wrapper.appendChild(label);
+  wrapper.appendChild(toc);
+
+  // Touch/click fallback: toggle open state (hover alone doesn't exist on touch).
+  label.addEventListener('click', function (e) {
+    e.stopPropagation();
+    wrapper.classList.toggle('is-open');
+  });
+  document.addEventListener('click', function (e) {
+    if (!wrapper.contains(e.target)) wrapper.classList.remove('is-open');
+  });
+
+  var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) {
+    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+    var el = document.getElementById(id);
+    if (el) map[id] = a;
+  });
+  var sections = Object.keys(map).map(function (id) { return document.getElementById(id); });
+  if (!sections.length) return;
+
+  function setActive(id) {
+    links.forEach(function (a) { a.classList.remove('active'); });
+    var a = map[id];
+    if (!a) return;
+    a.classList.add('active');
+    label.innerHTML = '<span class="crumb-current">' + a.textContent.trim() + '</span>';
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    var visible = entries.filter(function (e) { return e.isIntersecting; });
+    if (visible.length) {
+      visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+      setActive(visible[0].target.id);
+    }
+  }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(function (el) { observer.observe(el); });
+  setActive(sections[0].id);
+})();
+</script>
+</body>
+</html>

@@ -6,7 +6,8 @@ Croisement de trois sources ouvertes (DVF, DPE ADEME, COG INSEE) pour passer de 
 
 ## Rendu
 
-Le document à soumettre est [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html)).
+- TP1 : [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html))
+- TP2 : [rendu/rapport_tp2.pdf](rendu/rapport_tp2.pdf) (version HTML autonome : [rendu/rapport_tp2.html](rendu/rapport_tp2.html))
 
 ## Livrables
 
@@ -37,7 +38,7 @@ docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08)
 data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
 scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
 sql/             scripts DDL, import, requêtes de vérification et d'analyse (TP1 + TP2)
-rendu/           rapport final assemblé (PDF et HTML) — le document à soumettre (TP1)
+rendu/           rapports finaux assemblés (PDF et HTML) — les documents à soumettre (TP1 + TP2)
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
 aggregation/     agrégateur Kafka → data lake (TP2)
