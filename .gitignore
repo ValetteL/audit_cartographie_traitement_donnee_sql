@@ -1,6 +1,10 @@
-data/**/*.csv
-data/**/*.csv.gz
-data/**/*.gz
+data/*.csv
+data/*.csv.gz
+data/*.gz
+data/*.png
+# data/staging/*.csv EST versionné (voir docs/06_base_postgresql.md) :
+# nécessaire pour que `docker compose up` importe des données réelles
+# sans dépendre d'un accès réseau à data.gouv.fr / data.ademe.fr.
 *.pyc
 __pycache__/
 .venv/

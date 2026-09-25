@@ -10,7 +10,19 @@
 | [sql/04_requetes_verification.sql](../sql/04_requetes_verification.sql) | Contrôle des relations (comptages, orphelins) |
 | [sql/05_requetes_analyse.sql](../sql/05_requetes_analyse.sql) | Requêtes répondant à la problématique du TP |
 
+`data/staging/*.csv` (données déjà nettoyées) sont versionnés dans le dépôt. Pour les régénérer depuis les sources brutes : `scripts/telecharger_donnees.sh` puis `scripts/nettoyer_donnees.py`.
+
 ## Comment reproduire
+
+**Via `docker compose`** (méthode recommandée — un seul `docker compose up` crée la base, les tables et importe les données réelles automatiquement, sans étape manuelle) :
+
+```bash
+docker compose up -d
+```
+
+Sous le capot : le service `db` (`docker-compose.yml`) monte `sql/01_create_tables.sql` et `sql/03_import_donnees_reelles.sql` dans `/docker-entrypoint-initdb.d/`, exécutés automatiquement par l'image `postgres:16` à son premier démarrage, avec `data/staging/` monté au même chemin relatif que celui utilisé par le script d'import. Les CSV nettoyés (`data/staging/`) sont versionnés dans le dépôt : aucun accès réseau requis. Pour repartir d'une base vide : `docker compose down -v`.
+
+**Sans docker compose** (accès plus fin, ex. pour charger les données de test à la place) :
 
 ```bash
 docker run -d --name tp_audit_44_pg -e POSTGRES_PASSWORD=postgres \

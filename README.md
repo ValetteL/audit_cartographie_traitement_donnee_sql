@@ -20,25 +20,21 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 6. [06_base_postgresql.md](docs/06_base_postgresql.md) — base PostgreSQL : scripts et résultats de vérification
 7. [07_cartographie_globale.md](docs/07_cartographie_globale.md) — vue d'ensemble du cheminement
 
+## Démarrage rapide
+
+```bash
+docker compose up -d
+```
+
+Crée la base PostgreSQL, les tables et importe les données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics) — sans étape manuelle ni accès réseau, les CSV nettoyés sont versionnés dans `data/staging/`. Détails et méthode alternative sans docker compose : [docs/06_base_postgresql.md](docs/06_base_postgresql.md).
+
 ## Structure du dépôt
 
 ```
-docs/    documentation de chaque livrable
-data/    extraits bruts et nettoyés (département 44) — non versionnés (cf. .gitignore)
-sql/     scripts DDL, import, requêtes de vérification et d'analyse
-rendu/   rapport final assemblé (PDF et HTML) — le document à soumettre
+docs/            documentation de chaque livrable
+data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
+scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
+sql/             scripts DDL, import, requêtes de vérification et d'analyse
+rendu/           rapport final assemblé (PDF et HTML) — le document à soumettre
+docker-compose.yml   base PostgreSQL prête à l'emploi (voir Démarrage rapide)
 ```
-
-## Reproduire
-
-```bash
-# 1. Récupérer les données du département 44 (cf. docs/02_sources.md pour le détail des sources)
-# 2. Nettoyer/filtrer -> data/staging/
-# 3. Créer la base et importer
-psql -d audit_immo_energie_44 -f sql/01_create_tables.sql
-psql -d audit_immo_energie_44 -f sql/03_import_donnees_reelles.sql   # ou 02_insert_test_data.sql pour un jeu de test
-psql -d audit_immo_energie_44 -f sql/04_requetes_verification.sql
-psql -d audit_immo_energie_44 -f sql/05_requetes_analyse.sql
-```
-
-Détails complets dans [docs/06_base_postgresql.md](docs/06_base_postgresql.md).

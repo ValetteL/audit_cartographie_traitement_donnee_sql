@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16
+    container_name: tp_audit_44_pg
+    environment:
+      POSTGRES_DB: audit_immo_energie_44
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      # Scripts exécutés automatiquement, dans l'ordre, au premier démarrage
+      # (dossier vide -> postgres lance tout *.sql trouvé ici une seule fois).
+      - ./sql/01_create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql:ro
+      - ./sql/03_import_donnees_reelles.sql:/docker-entrypoint-initdb.d/02_import_donnees_reelles.sql:ro
+      # Monté au même chemin relatif que celui utilisé par le script d'import
+      # (data/staging/...), pour qu'il fonctionne sans modification.
+      - ./data/staging:/data/staging:ro
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d audit_immo_energie_44"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pg_data:

@@ -1,0 +1,208 @@
+code_insee,nom_commune,code_postal,epci_code,epci_nom,dep_code,dep_nom,reg_code,reg_nom
+44001,Abbaretz,44170,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44002,Aigrefeuille-sur-Maine,44140,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44003,Ancenis-Saint-Géréon,44150,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44005,Chaumes-en-Retz,44320,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44006,Assérac,44410,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44007,Avessac,44460,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44009,Basse-Goulaine,44115,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44010,Batz-sur-Mer,44740,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44012,La Bernerie-en-Retz,44760,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44013,Besné,44160,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44014,Le Bignon,44140,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44015,Blain,44130,244400453,CC Pays de Blain Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44016,La Boissière-du-Doré,44430,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44018,Bouaye,44830,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44019,Bouée,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44020,Bouguenais,44340,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44021,Villeneuve-en-Retz,44580,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44022,Boussay,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44023,Bouvron,44130,244400453,CC Pays de Blain Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44024,Brains,44830,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44025,Campbon,44750,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44026,Carquefou,44470,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44027,Casson,44390,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44028,Le Cellier,44850,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44029,Divatte-sur-Loire,44450,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44030,La Chapelle-des-Marais,44410,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44031,La Chapelle-Glain,44670,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44032,La Chapelle-Heulin,44194,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44033,La Chapelle-Launay,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44035,La Chapelle-sur-Erdre,44240,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44036,Châteaubriant,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44037,Château-Thébaud,44690,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44038,Chauvé,44320,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44039,Cheix-en-Retz,44640,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44041,La Chevrolière,44118,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44043,Clisson,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44044,Conquereuil,44290,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44045,Cordemais,44360,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44046,Corsept,44560,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44047,Couëron,44220,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44048,Couffé,44521,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44049,Le Croisic,44490,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44050,Crossac,44160,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44051,Derval,44590,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44052,Donges,44480,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44053,Drefféac,44530,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44054,Erbray,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44055,La Baule-Escoublac,44500,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44056,Fay-de-Bretagne,44130,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44057,Fégréac,44460,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44058,Fercé,44660,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44061,Frossay,44320,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44062,Le Gâvre,44130,244400453,CC Pays de Blain Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44063,Gétigné,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44064,Gorges,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44065,Grand-Auverné,44520,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44066,Grandchamp-des-Fontaines,44119,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44067,Guémené-Penfao,44290,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44068,Guenrouet,44530,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44069,Guérande,44350,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44070,La Haie-Fouassière,44690,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44071,Haute-Goulaine,44115,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44072,Herbignac,44410,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44073,Héric,44810,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44074,Indre,44610,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44075,Issé,44520,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44076,Jans,44170,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44077,Joué-sur-Erdre,44440,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44078,Juigné-des-Moutiers,44670,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44079,Le Landreau,44430,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44080,Lavau-sur-Loire,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44081,Legé,44650,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44082,Ligné,44850,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44083,La Limouzinière,44310,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44084,Le Loroux-Bottereau,44430,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44085,Louisfert,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44086,Lusanger,44590,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44087,Machecoul-Saint-Même,44270,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44088,Maisdon-sur-Sèvre,44690,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44089,Malville,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44090,La Marne,44270,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44091,Marsac-sur-Don,44170,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44092,Massérac,44290,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44094,Mauves-sur-Loire,44470,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44095,La Meilleraye-de-Bretagne,44520,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44096,Mésanger,44153,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44097,Mesquer,44420,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44098,Missillac,44780,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44099,Moisdon-la-Rivière,44520,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44100,Monnières,44690,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44101,La Montagne,44620,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44102,Montbert,44140,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44103,Montoir-de-Bretagne,44550,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44104,Montrelais,44370,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44105,Mouais,44590,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44106,Les Moutiers-en-Retz,44760,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44107,Mouzeil,44850,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44108,Mouzillon,44196,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44109,Nantes,44000,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44110,Nort-sur-Erdre,44390,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44111,Notre-Dame-des-Landes,44130,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44112,Noyal-sur-Brutz,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44113,Nozay,44170,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44114,Orvault,44700,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44115,Oudon,44521,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44116,Paimbœuf,44560,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44117,Le Pallet,44198,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44118,Pannecé,44440,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44119,Paulx,44270,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44120,Le Pellerin,44640,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44121,Petit-Auverné,44670,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44122,Petit-Mars,44390,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44123,Pierric,44290,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44124,Le Pin,44540,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44125,Piriac-sur-Mer,44420,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44126,La Plaine-sur-Mer,44770,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44127,La Planche,44140,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44128,Plessé,44630,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44129,Pontchâteau,44160,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44130,Pont-Saint-Martin,44860,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44131,Pornic,44210,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44132,Pornichet,44380,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44133,Port-Saint-Père,44710,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44134,Pouillé-les-Côteaux,44522,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44135,Le Pouliguen,44510,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44136,Préfailles,44770,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44137,Prinquiau,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44138,Puceul,44390,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44139,Quilly,44750,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44140,La Regrippière,44330,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44141,La Remaudière,44430,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44142,Remouillé,44140,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44143,Rezé,44400,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44144,Riaillé,44440,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44145,Rouans,44640,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44146,Rougé,44143,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44148,Ruffigné,44660,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44149,Saffré,44390,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44150,Saint-Aignan-Grandlieu,44860,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44151,Saint-André-des-Eaux,44117,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44152,Sainte-Anne-sur-Brivet,44160,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44153,Saint-Aubin-des-Châteaux,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44154,Saint-Brevin-les-Pins,44250,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44155,Saint-Colomban,44310,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44156,Corcoué-sur-Logne,44650,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44157,Saint-Étienne-de-Mer-Morte,44270,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44158,Saint-Étienne-de-Montluc,44360,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44159,Saint-Fiacre-sur-Maine,44690,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44161,Saint-Gildas-des-Bois,44530,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44162,Saint-Herblain,44008,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44163,Vair-sur-Loire,44150,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44164,Saint-Hilaire-de-Chaléons,44680,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44165,Saint-Hilaire-de-Clisson,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44166,Saint-Jean-de-Boiseau,44472,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44168,Saint-Joachim,44720,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44169,Saint-Julien-de-Concelles,44450,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44170,Saint-Julien-de-Vouvantes,44670,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44171,Saint-Léger-les-Vignes,44710,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44172,Sainte-Luce-sur-Loire,44980,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44173,Saint-Lumine-de-Clisson,44190,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44174,Saint-Lumine-de-Coutais,44310,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44175,Saint-Lyphard,44410,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44176,Saint-Malo-de-Guersac,44550,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44178,Saint-Mars-de-Coutais,44680,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44179,Saint-Mars-du-Désert,44850,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44180,Vallons-de-l'Erdre,44540,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44182,Saint-Michel-Chef-Chef,44213,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44183,Saint-Molf,44350,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44184,Saint-Nazaire,44024,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44185,Saint-Nicolas-de-Redon,35603,243500741,CA Redon Agglomération,44,Loire-Atlantique,52,Pays de la Loire
+44186,Sainte-Pazanne,44680,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44187,Saint-Père-en-Retz,44320,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44188,Saint-Philbert-de-Grand-Lieu,44310,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44189,Sainte-Reine-de-Bretagne,44160,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44190,Saint-Sébastien-sur-Loire,44230,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44192,Saint-Viaud,44320,244400586,CC du Sud Estuaire,44,Loire-Atlantique,52,Pays de la Loire
+44193,Saint-Vincent-des-Landes,44590,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44194,Sautron,44880,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44195,Savenay,44260,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44196,Sévérac,44530,200000438,CC du Pays de Pontchâteau Saint-Gildas-des-Bois,44,Loire-Atlantique,52,Pays de la Loire
+44197,Sion-les-Mines,44590,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44198,Les Sorinières,44840,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44199,Soudan,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44200,Soulvache,44660,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44201,Sucé-sur-Erdre,44240,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44202,Teillé,44440,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44203,Le Temple-de-Bretagne,44360,200072734,CC Estuaire et Sillon,44,Loire-Atlantique,52,Pays de la Loire
+44204,Thouaré-sur-Loire,44470,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44205,Les Touches,44390,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44206,Touvois,44650,200071546,CC Sud Retz Atlantique,44,Loire-Atlantique,52,Pays de la Loire
+44207,Trans-sur-Erdre,44440,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44208,Treffieux,44170,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44209,Treillières,44119,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44210,Trignac,44570,244400644,CA de la Région Nazairienne et de l'Estuaire (CARENE),44,Loire-Atlantique,52,Pays de la Loire
+44211,La Turballe,44356,244400610,CA de la Presqu'île de Guérande Atlantique (Cap Atlantique),44,Loire-Atlantique,52,Pays de la Loire
+44212,Vallet,44194,200067866,CC Sèvre et Loire,44,Loire-Atlantique,52,Pays de la Loire
+44213,Loireauxence,44154,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44214,Vay,44170,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire
+44215,Vertou,44120,244400404,Nantes Métropole,44,Loire-Atlantique,52,Pays de la Loire
+44216,Vieillevigne,44116,200067635,CA Clisson Sèvre et Maine Agglo,44,Loire-Atlantique,52,Pays de la Loire
+44217,Vigneux-de-Bretagne,44360,244400503,CC d'Erdre et Gesvres,44,Loire-Atlantique,52,Pays de la Loire
+44218,Villepot,44110,200072726,CC Châteaubriant-Derval,44,Loire-Atlantique,52,Pays de la Loire
+44220,Vue,44640,200067346,CA Pornic Agglo Pays de Retz,44,Loire-Atlantique,52,Pays de la Loire
+44221,La Chevallerais,44810,244400453,CC Pays de Blain Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44222,La Roche-Blanche,44522,244400552,CC du Pays d'Ancenis,44,Loire-Atlantique,52,Pays de la Loire
+44223,Geneston,44140,244400438,CC Grand Lieu Communauté,44,Loire-Atlantique,52,Pays de la Loire
+44224,La Grigonnais,44170,244400537,CC de Nozay,44,Loire-Atlantique,52,Pays de la Loire

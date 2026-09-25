@@ -36,3 +36,5 @@ Trois sources réelles, toutes restreintes au département de la Loire-Atlantiqu
 | Description | Table de référence géographique : code INSEE, nom, codes postaux, département, région, EPCI, population. |
 
 Les trois sources sont reliées par le code INSEE de la commune (`code_commune` en DVF, `code_insee_ban` en DPE, `code_insee` en COG).
+
+Téléchargement reproductible : `scripts/telecharger_donnees.sh`. Les CSV nettoyés issus de ces sources (`data/staging/`) sont versionnés dans le dépôt pour que `docker compose up` fonctionne sans dépendre d'un accès réseau — cf. [06_base_postgresql.md](06_base_postgresql.md).
