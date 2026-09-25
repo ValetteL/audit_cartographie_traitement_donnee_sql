@@ -25,7 +25,7 @@ header-includes: |
 
 # 1. Architecture
 
-Le TP1 a construit une base PostgreSQL statique (import unique, département 44) croisant DVF et DPE. Le TP2 ajoute un pipeline **temps réel** rechargeant la même base en continu : Kafka, data lake brut, Spark Structured Streaming, PostgreSQL, supervision et dashboard métier.
+Le TP1 a construit une base PostgreSQL statique (import unique, département 44) croisant DVF et DPE. Le TP2 ajoute un pipeline **temps réel** rechargeant la même base en continu : Kafka, data lake brut, Spark Structured Streaming, PostgreSQL, monitoring (Grafana) et dataviz métier (Metabase, outil dédié).
 
 ![Architecture du pipeline temps réel TP2](../docs/assets/tp2_architecture.png){width=95%}
 
@@ -61,9 +61,11 @@ Le connecteur Kafka de Spark est résolu et figé dans l'image au build, pas té
 
 # 5. Observabilité (Prometheus + Grafana)
 
+Consigne du formateur : Grafana réservé au monitoring technique ; la dataviz métier passe par un outil séparé (section suivante).
+
 | Cible | Exportateur | Expose |
 |---|---|---|
-| Conteneurs | cAdvisor | CPU/mémoire/réseau — remplace node-exporter (un seul hôte, pas de cluster) |
+| Conteneurs | `docker-stats-exporter` (custom, API Docker) | CPU/mémoire — remplace cAdvisor (échoue sous Docker Desktop Windows/Mac : conteneurs dans une VM cachée, `/var/lib/docker` monté ne correspond pas au vrai backend) et node-exporter (un seul hôte) |
 | PostgreSQL | `postgres-exporter` | Connexions, disponibilité, taille |
 | `api-producer`, `spark` | `prometheus_client` | Métriques métier du pipeline |
 
@@ -73,7 +75,7 @@ Dashboard *TP2 — Pipeline temps réel* provisionné automatiquement : 8 panels
 
 # 6. Data visualization
 
-Le sujet demande un dashboard sans imposer d'outil. Plutôt qu'un second outil dédié (Metabase), la dataviz métier est un second dashboard Grafana *TP2 — Dataviz métier*, sur un second datasource PostgreSQL : répartition des étiquettes DPE, origine backfill/live, volume dans le temps, communes les plus chères, part F-G par tranche de prix. Provisionné comme le dashboard technique, sans étape manuelle — contrairement à un outil séparé dont le dashboard se construit à la main.
+Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL — répartition des étiquettes DPE, communes les plus chères, part F-G par tranche de prix. Premier accès sur `:3001` : assistant de configuration Metabase, seule étape manuelle du projet (propre à l'outil, qui ne permet pas de provisionner ses dashboards comme du code).
 
 # 7. Vérification
 
@@ -85,7 +87,7 @@ Stack testée à froid (`docker compose down -v && docker compose up -d`) sur tr
 | PostgreSQL (`diagnostic_dpe_flux`) | 351 959 lignes après backfill complet |
 | Raw vs Clean | Vérifié à la source (fichiers + base) : raw ≥ clean à tout instant |
 | Prometheus | 4/4 cibles `UP` |
-| Grafana | 2 dashboards + 2 datasources provisionnés ; requêtes vérifiées avec données réelles |
+| Grafana | Dashboard monitoring provisionné ; requêtes vérifiées avec données réelles |
 
 Le classement des communes les plus chères, recalculé en continu, retombe sur les valeurs du TP1 (La Baule-Escoublac 6 536 €/m², Pornichet 5 636 €/m², Nantes 3 777 €/m²).
 
@@ -106,6 +108,7 @@ Démarre l'ensemble (TP1 + TP2) sans étape manuelle ni accès réseau obligatoi
 | PostgreSQL | `docker exec tp_audit_44_pg psql -U postgres -d audit_immo_energie_44 -c "SELECT COUNT(*) FROM diagnostic_dpe_flux;"` |
 | Prometheus | http://localhost:9090/targets |
 | Grafana | http://localhost:3000 (admin/admin) |
+| Metabase | http://localhost:3001 |
 
 ## Ports exposés
 
@@ -113,8 +116,8 @@ Démarre l'ensemble (TP1 + TP2) sans étape manuelle ni accès réseau obligatoi
 |---|---|
 | 5432 | PostgreSQL |
 | 9092 | Kafka (accès externe) |
-| 8001 / 8003 | Métriques Prometheus : producteur / Spark |
-| 8080 | cAdvisor |
+| 8001 / 8003 / 8004 | Métriques Prometheus : producteur / Spark / docker-stats-exporter |
 | 9187 | postgres-exporter |
 | 9090 | Prometheus |
 | 3000 | Grafana |
+| 3001 | Metabase |

@@ -40,9 +40,11 @@ aggregated/        dpe_enrichi.ndjson      — flux enrichi, avant nettoyage
 
 ## Observabilité (Prometheus + Grafana)
 
+Consigne explicite du formateur : Grafana réservé au monitoring technique (infra, PostgreSQL, indicateur Raw vs Clean) ; la dataviz métier passe par un outil séparé (cf. section suivante).
+
 | Cible | Exportateur | Ce qu'il expose |
 |---|---|---|
-| Conteneurs (CPU, mémoire, réseau) | cAdvisor | Infra — remplace node-exporter, écarté du périmètre : le TP tourne sur une seule machine, pas un cluster à superviser au niveau host |
+| Conteneurs (CPU, mémoire) | `docker-stats-exporter` (custom, API Docker) | Infra — remplace cAdvisor, dont la résolution du driver de stockage échoue systématiquement sous Docker Desktop (Windows/Mac) : les conteneurs y tournent dans une VM cachée, `/var/lib/docker` monté depuis l'hôte ne correspond pas au vrai backend de stockage. Remplace aussi node-exporter (un seul hôte, pas de cluster) |
 | PostgreSQL | `postgres-exporter` | Connexions actives, disponibilité, taille de la base |
 | `api-producer`, `spark` | `prometheus_client` (Python), un exporteur HTTP par service | Métriques métier du pipeline |
 
@@ -52,7 +54,7 @@ Dashboard Grafana provisionné automatiquement (aucune étape manuelle) : [monit
 
 ## Data visualization
 
-Le sujet demande un dashboard de data visualization sans imposer d'outil. Plutôt qu'un second outil dédié (ex. Metabase), la dataviz métier est un second dashboard Grafana ([monitoring/grafana/provisioning/dashboards/tp2_metier.json](../monitoring/grafana/provisioning/dashboards/tp2_metier.json)), branché sur un second datasource PostgreSQL (en plus du datasource Prometheus utilisé pour l'observabilité) : répartition des étiquettes DPE reçues, origine backfill/live, volume traité dans le temps, communes les plus chères, part de logements F-G par tranche de prix, derniers DPE reçus. Provisionné au même titre que le dashboard technique — pas d'étape manuelle, alors qu'un outil séparé (Metabase notamment) demande de construire son dashboard à la main dans son UI au premier lancement.
+Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL, pour les dashboards métier (répartition des étiquettes DPE, communes les plus chères, part de logements F-G par tranche de prix...). Premier accès sur http://localhost:3001 : assistant de configuration Metabase (se connecter à `db:5432/audit_immo_energie_44`, postgres/postgres), seule étape manuelle du projet — propre à Metabase, qui ne permet pas de provisionner ses dashboards comme du code.
 
 ## Comment reproduire
 
@@ -60,7 +62,7 @@ Le sujet demande un dashboard de data visualization sans imposer d'outil. Plutô
 docker compose up -d
 ```
 
-Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, Kafka, le pipeline complet (producteur, Spark Structured Streaming), Prometheus, Grafana et cAdvisor — sans étape manuelle ni accès réseau obligatoire (le backfill utilise les CSV déjà versionnés ; seule la phase "live" de `api-producer` appelle l'API ADEME, avec repli silencieux si elle est inaccessible). Pour repartir d'un état vide : `docker compose down -v` (non requis en usage normal : la création des tables est idempotente, même sur un volume déjà initialisé par le TP1).
+Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, Kafka, le pipeline complet (producteur, Spark Structured Streaming), Prometheus, Grafana et Metabase — sans étape manuelle ni accès réseau obligatoire (le backfill utilise les CSV déjà versionnés ; seule la phase "live" de `api-producer` appelle l'API ADEME, avec repli silencieux si elle est inaccessible). Pour repartir d'un état vide : `docker compose down -v` (non requis en usage normal : la création des tables est idempotente, même sur un volume déjà initialisé par le TP1).
 
 ## Comment vérifier
 
@@ -70,9 +72,10 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | Data lake | `docker exec tp2_spark sh -c "wc -l /datalake/raw/api/dpe_raw.ndjson /datalake/aggregated/dpe_enrichi.ndjson"` |
 | PostgreSQL (flux) | `docker exec tp_audit_44_pg psql -U postgres -d audit_immo_energie_44 -c "SELECT COUNT(*) FROM diagnostic_dpe_flux;"` |
 | Reprise sur erreur | `docker kill tp2_spark && docker compose up -d spark` → reprend depuis le checkpoint Kafka, sans rejouer ni perdre d'événements |
-| Prometheus | http://localhost:9090/targets — les 4 cibles (cadvisor, postgres, api-producer, spark) doivent être `UP` |
-| Grafana | http://localhost:3000 (admin/admin, ou accès anonyme activé) — dashboards *TP2 — Pipeline temps réel* (observabilité) et *TP2 — Dataviz métier* provisionnés automatiquement, ainsi que les datasources Prometheus et PostgreSQL |
-| Métriques brutes | http://localhost:8001/metrics (producteur), http://localhost:8003/metrics (Spark) |
+| Prometheus | http://localhost:9090/targets — les 4 cibles (docker-stats-exporter, postgres, api-producer, spark) doivent être `UP` |
+| Grafana | http://localhost:3000 (admin/admin, ou accès anonyme activé) — dashboard *TP2 — Pipeline temps réel* (monitoring uniquement) provisionné automatiquement |
+| Metabase | http://localhost:3001 — dataviz métier |
+| Métriques brutes | http://localhost:8001/metrics (producteur), http://localhost:8003/metrics (Spark), http://localhost:8004/metrics (docker-stats-exporter) |
 
 ## Ports exposés
 
@@ -81,7 +84,8 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | 5432 | PostgreSQL |
 | 9092 | Kafka (accès externe) |
 | 8001 / 8003 | Métriques Prometheus : producteur / Spark |
-| 8080 | cAdvisor |
+| 8004 | Métriques Prometheus : docker-stats-exporter |
 | 9187 | postgres-exporter |
 | 9090 | Prometheus |
 | 3000 | Grafana |
+| 3001 | Metabase |

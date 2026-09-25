@@ -2,11 +2,11 @@ global:
   scrape_interval: 10s
 
 scrape_configs:
-  # Infra conteneurs (CPU/mémoire/réseau par service) — remplace node-exporter,
-  # explicitement écarté du périmètre : cadvisor couvre déjà l'infra Docker du TP.
-  - job_name: cadvisor
+  # Infra conteneurs (CPU/mémoire par service) — remplace node-exporter,
+  # explicitement écarté du périmètre : ce TP tourne sur une seule machine.
+  - job_name: docker-stats-exporter
     static_configs:
-      - targets: ["cadvisor:8080"]
+      - targets: ["docker-stats-exporter:8000"]
 
   # PostgreSQL (tables TP1 + flux temps réel TP2)
   - job_name: postgres

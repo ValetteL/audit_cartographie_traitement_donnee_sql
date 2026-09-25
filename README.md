@@ -29,7 +29,7 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 docker compose up -d
 ```
 
-Démarre l'ensemble TP1 + TP2 : base PostgreSQL avec import des données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics), et le pipeline temps réel (Kafka, data lake, PySpark, PostgreSQL, Prometheus/Grafana) — sans étape manuelle ni accès réseau obligatoire, les CSV nettoyés sont versionnés dans `data/staging/`. Détails : [docs/06_base_postgresql.md](docs/06_base_postgresql.md) (TP1) et [docs/08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) (TP2, avec les commandes de vérification).
+Démarre l'ensemble TP1 + TP2 : base PostgreSQL avec import des données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics), et le pipeline temps réel (Kafka, data lake, PySpark, PostgreSQL, Prometheus/Grafana pour le monitoring, Metabase pour la dataviz métier) — sans étape manuelle ni accès réseau obligatoire, les CSV nettoyés sont versionnés dans `data/staging/` (seule exception : la configuration initiale de Metabase, propre à cet outil). Détails : [docs/06_base_postgresql.md](docs/06_base_postgresql.md) (TP1) et [docs/08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) (TP2, avec les commandes de vérification).
 
 ## Structure du dépôt
 
@@ -42,6 +42,6 @@ rendu/           rapports finaux assemblés (PDF et HTML) — les documents à s
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
 spark/           Spark Structured Streaming : consomme Kafka, data lake, nettoyage, PostgreSQL (TP2)
-monitoring/      configuration Prometheus et Grafana (TP2)
+monitoring/      configuration Prometheus, Grafana (monitoring) et docker-stats-exporter (TP2)
 docker-compose.yml   stack complète prête à l'emploi (voir Démarrage rapide)
 ```

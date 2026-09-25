@@ -12,7 +12,7 @@
       "gridPos": { "h": 9, "w": 24, "x": 0, "y": 0 },
       "fieldConfig": { "defaults": { "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
       "targets": [
-        { "expr": "raw_records_total", "legendFormat": "Raw (Data Lake — aggregator)", "refId": "A" },
+        { "expr": "raw_records_total", "legendFormat": "Raw (Data Lake — spark)", "refId": "A" },
         { "expr": "clean_records_total", "legendFormat": "Clean (PostgreSQL — spark)", "refId": "B" }
       ]
     },
@@ -71,7 +71,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
       "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
       "targets": [
-        { "expr": "sum by (name) (rate(container_cpu_usage_seconds_total{name=~\"tp2_.*|tp_audit_44_pg\"}[1m]))", "legendFormat": "{{name}}", "refId": "A" }
+        { "expr": "sum by (container) (rate(docker_container_cpu_seconds_total{container=~\"tp2_.*|tp_audit_44_pg\"}[1m]))", "legendFormat": "{{container}}", "refId": "A" }
       ]
     },
     {
@@ -81,7 +81,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
       "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
       "targets": [
-        { "expr": "container_memory_usage_bytes{name=~\"tp2_.*|tp_audit_44_pg\"}", "legendFormat": "{{name}}", "refId": "A" }
+        { "expr": "docker_container_memory_usage_bytes{container=~\"tp2_.*|tp_audit_44_pg\"}", "legendFormat": "{{container}}", "refId": "A" }
       ]
     }
   ],

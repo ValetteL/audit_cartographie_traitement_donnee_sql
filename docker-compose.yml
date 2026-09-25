@@ -156,20 +156,21 @@ services:
       - "9187:9187"
     networks: [tp2]
 
-  # Métriques infra par conteneur (CPU/mémoire/réseau). Remplace node-exporter
-  # (écarté du périmètre : ce TP tourne sur une seule machine, pas un cluster
-  # à superviser au niveau host).
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.2
-    container_name: tp2_cadvisor
-    privileged: true
+  # Métriques infra par conteneur (CPU/mémoire). Remplace cAdvisor : sous
+  # Docker Desktop (Windows/Mac), les conteneurs tournent dans une VM cachée
+  # et /var/lib/docker monté depuis l'hôte ne correspond pas au vrai backend
+  # de stockage — cAdvisor ne peut identifier la couche overlayfs d'aucun
+  # conteneur et abandonne leur suivi. Ce petit exporteur interroge l'API
+  # Docker (docker.sock) à la place : stable quel que soit le driver de
+  # stockage, sans conteneur privilégié. Remplace aussi node-exporter (écarté
+  # du périmètre : un seul hôte, pas de cluster à superviser).
+  docker-stats-exporter:
+    build: ./monitoring/docker-stats-exporter
+    container_name: tp2_docker_stats_exporter
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - "8080:8080"
+      - "8004:8000"
     networks: [tp2]
 
   prometheus:
@@ -177,7 +178,7 @@ services:
     container_name: tp2_prometheus
     depends_on:
       - postgres-exporter
-      - cadvisor
+      - docker-stats-exporter
       - api-producer
       - spark
     volumes:
@@ -187,18 +188,14 @@ services:
       - "9090:9090"
     networks: [tp2]
 
-  # Sert à la fois l'observabilité (Prometheus) et la dataviz métier (PostgreSQL) :
-  # le sujet ne demande pas d'outil de dataviz nommé, seulement "un dashboard" —
-  # ajouter un second outil (Metabase) uniquement pour ça aurait dupliqué un
-  # besoin déjà couvert, sans rien automatiser de plus (son dashboard business se
-  # construit à la main dans son UI, contrairement à Grafana qui se provisionne
-  # entièrement comme du code, sans étape manuelle).
+  # Grafana = monitoring technique uniquement (infra, PostgreSQL, indicateur
+  # Raw vs Clean), consigne explicite du formateur. La dataviz métier passe
+  # par Metabase, outil séparé (cf. service metabase ci-dessous).
   grafana:
     image: grafana/grafana:11.2.0
     container_name: tp2_grafana
     depends_on:
       - prometheus
-      - db
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
@@ -209,6 +206,19 @@ services:
       - grafana_data:/var/lib/grafana
     ports:
       - "3000:3000"
+    networks: [tp2]
+
+  # --- Data Visualization (outil dédié, distinct de Grafana = monitoring) ---
+  metabase:
+    image: metabase/metabase:v0.51.4
+    container_name: tp2_metabase
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MB_DB_TYPE: h2
+    ports:
+      - "3001:3000"
     networks: [tp2]
 
 networks:
