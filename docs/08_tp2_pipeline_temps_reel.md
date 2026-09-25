@@ -4,34 +4,7 @@ Prolonge le TP1 (base PostgreSQL statique, département 44) avec un pipeline tem
 
 ## Architecture
 
-```
-                    ┌──────────────┐
-  data/staging/  →  │ source2-     │  →  raw/source2/ (data lake)
-  dvf_44.csv         │ loader       │      dvf_44.csv, prix_moyen_commune.csv
-  (TP1, one-shot)    └──────────────┘
-
-  data/staging/       ┌──────────────┐      ┌───────┐      ┌────────────┐
-  diagnostic_dpe.csv →│ api-producer │  →   │ Kafka │  →   │ aggregator │
-  (backfill)          │ + API ADEME  │      │ topic │      │            │
-                       │ (live)       │      │dpe-   │      └─────┬──────┘
-                       └──────────────┘      │flux-44│            │
-                                              └───────┘    raw/api/dpe_raw.ndjson
-                                                            aggregated/dpe_enrichi.ndjson
-                                                            (jointure avec prix_moyen_commune)
-                                                                    │
-                                                                    ▼
-                                                            ┌───────────────┐
-                                                            │ spark (batch  │
-                                                            │ toutes les    │
-                                                            │ 60s)          │
-                                                            └───────┬───────┘
-                                                                    ▼
-                                                    PostgreSQL : diagnostic_dpe_flux
-                                                                    │
-                                                                    ▼
-                                          Grafana (2 dashboards provisionnés : observabilité + dataviz métier)
-                                          datasources : Prometheus (métriques) + PostgreSQL (données métier)
-```
+![Architecture du pipeline temps réel TP2](assets/tp2_architecture.png)
 
 ## Sources
 
