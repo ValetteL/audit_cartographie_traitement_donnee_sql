@@ -75,7 +75,7 @@ Dashboard *TP2 — Pipeline temps réel* provisionné automatiquement : 8 panels
 
 # 6. Data visualization
 
-Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL — répartition des étiquettes DPE, communes les plus chères, part F-G par tranche de prix. Premier accès sur `:3001` : assistant de configuration Metabase, seule étape manuelle du projet (propre à l'outil, qui ne permet pas de provisionner ses dashboards comme du code).
+Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL — répartition des étiquettes DPE, communes les plus chères, part F-G par tranche de prix. Metabase n'ayant pas de mécanisme de provisioning par fichiers comme Grafana, [monitoring/metabase/bootstrap.py](../monitoring/metabase/bootstrap.py) configure compte admin, connexion PostgreSQL et dashboard par l'API REST de Metabase, exécuté automatiquement au démarrage (`admin@tp2.local` / `MetabaseTp2!2026` sur `:3001`) : aucune étape manuelle, y compris pour cet outil.
 
 # 7. Vérification
 
@@ -108,7 +108,7 @@ Démarre l'ensemble (TP1 + TP2) sans étape manuelle ni accès réseau obligatoi
 | PostgreSQL | `docker exec tp_audit_44_pg psql -U postgres -d audit_immo_energie_44 -c "SELECT COUNT(*) FROM diagnostic_dpe_flux;"` |
 | Prometheus | http://localhost:9090/targets |
 | Grafana | http://localhost:3000 (admin/admin) |
-| Metabase | http://localhost:3001 |
+| Metabase | http://localhost:3001 (`admin@tp2.local` / `MetabaseTp2!2026`) |
 
 ## Ports exposés
 
@@ -121,3 +121,7 @@ Démarre l'ensemble (TP1 + TP2) sans étape manuelle ni accès réseau obligatoi
 | 9090 | Prometheus |
 | 3000 | Grafana |
 | 3001 | Metabase |
+
+## Limites connues
+
+Choix assumés, hors périmètre pour un TP sur une seule machine : data lake non partitionné par date, `ON CONFLICT DO NOTHING` (pas de mise à jour sur republication ADEME), Kafka mono-broker (réplication 1), pas de limites CPU/mémoire par conteneur.

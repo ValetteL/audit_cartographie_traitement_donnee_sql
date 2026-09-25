@@ -54,7 +54,11 @@ Dashboard Grafana provisionné automatiquement (aucune étape manuelle) : [monit
 
 ## Data visualization
 
-Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL, pour les dashboards métier (répartition des étiquettes DPE, communes les plus chères, part de logements F-G par tranche de prix...). Premier accès sur http://localhost:3001 : assistant de configuration Metabase (se connecter à `db:5432/audit_immo_energie_44`, postgres/postgres), seule étape manuelle du projet — propre à Metabase, qui ne permet pas de provisionner ses dashboards comme du code.
+Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté à PostgreSQL, pour les dashboards métier (répartition des étiquettes DPE, origine backfill/live, volume dans le temps, communes les plus chères, part de logements F-G par tranche de prix, derniers DPE reçus).
+
+Contrairement à Grafana, Metabase n'a pas de mécanisme de provisioning par fichiers déposés au démarrage — la configuration passe normalement par un assistant web (compte admin, connexion à la base). [monitoring/metabase/bootstrap.py](../monitoring/metabase/bootstrap.py) rejoue ce rôle par l'API REST de Metabase (`/api/setup`, `/api/database`, `/api/card`, `/api/dashboard`) : compte admin, connexion PostgreSQL et les 6 graphiques du dashboard métier, sans passer par l'UI. Exécuté automatiquement au démarrage par le service `metabase-bootstrap` (idempotent : ne recrée rien si déjà fait, ex. après un simple redémarrage grâce au volume `metabase_data`).
+
+Accès : http://localhost:3001, identifiants `admin@tp2.local` / `MetabaseTp2!2026`.
 
 ## Comment reproduire
 
@@ -62,7 +66,7 @@ Outil dédié, distinct de Grafana (consigne du formateur) : Metabase, connecté
 docker compose up -d
 ```
 
-Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, Kafka, le pipeline complet (producteur, Spark Structured Streaming), Prometheus, Grafana et Metabase — sans étape manuelle ni accès réseau obligatoire (le backfill utilise les CSV déjà versionnés ; seule la phase "live" de `api-producer` appelle l'API ADEME, avec repli silencieux si elle est inaccessible). Pour repartir d'un état vide : `docker compose down -v` (non requis en usage normal : la création des tables est idempotente, même sur un volume déjà initialisé par le TP1).
+Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, Kafka, le pipeline complet (producteur, Spark Structured Streaming), Prometheus, Grafana et Metabase (compte admin et dashboard métier configurés automatiquement) — sans étape manuelle ni accès réseau obligatoire (le backfill utilise les CSV déjà versionnés ; seule la phase "live" de `api-producer` appelle l'API ADEME, avec repli silencieux si elle est inaccessible). Pour repartir d'un état vide : `docker compose down -v` (non requis en usage normal : la création des tables PostgreSQL et la configuration de Metabase sont toutes deux idempotentes, même sur des volumes déjà initialisés par une exécution précédente).
 
 ## Comment vérifier
 
@@ -74,7 +78,7 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | Reprise sur erreur | `docker kill tp2_spark && docker compose up -d spark` → reprend depuis le checkpoint Kafka, sans rejouer ni perdre d'événements |
 | Prometheus | http://localhost:9090/targets — les 4 cibles (docker-stats-exporter, postgres, api-producer, spark) doivent être `UP` |
 | Grafana | http://localhost:3000 (admin/admin, ou accès anonyme activé) — dashboard *TP2 — Pipeline temps réel* (monitoring uniquement) provisionné automatiquement |
-| Metabase | http://localhost:3001 — dataviz métier |
+| Metabase | http://localhost:3001 (`admin@tp2.local` / `MetabaseTp2!2026`) — dashboard *TP2 — Dataviz métier* configuré automatiquement |
 | Métriques brutes | http://localhost:8001/metrics (producteur), http://localhost:8003/metrics (Spark), http://localhost:8004/metrics (docker-stats-exporter) |
 
 ## Ports exposés
@@ -89,3 +93,12 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | 9090 | Prometheus |
 | 3000 | Grafana |
 | 3001 | Metabase |
+
+## Limites connues
+
+Choix assumés, hors périmètre pour un TP tournant sur une seule machine :
+
+- **Data lake non partitionné par date** : `raw/api/dpe_raw.ndjson` grossit indéfiniment dans un seul fichier plutôt que d'être partitionné par jour (pratique standard des data lakes pour l'archivage et la relecture ciblée).
+- **`ON CONFLICT DO NOTHING`** : une correction ultérieure d'un DPE déjà inséré (republication côté ADEME) ne serait pas répercutée en base.
+- **Kafka mono-broker** (réplication 1) : pas de tolérance de panne si le broker crashe avec des données non flushées.
+- **Pas de limites CPU/mémoire** sur les conteneurs.

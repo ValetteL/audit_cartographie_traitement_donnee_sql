@@ -217,8 +217,29 @@ services:
         condition: service_healthy
     environment:
       MB_DB_TYPE: h2
+      # Sans volume, la base H2 interne de Metabase (compte admin, connexion
+      # PostgreSQL, dashboards) vit dans la couche writable du conteneur : elle
+      # disparaît au moindre `docker compose down` (pas seulement `-v`), pas
+      # seulement au redémarrage du conteneur. Le volume la fait persister
+      # comme pg_data/grafana_data ; seul `down -v` la réinitialise (attendu).
+      MB_DB_FILE: /metabase-data/metabase.db
+    volumes:
+      - metabase_data:/metabase-data
     ports:
       - "3001:3000"
+    networks: [tp2]
+
+  # Configure Metabase par son API (compte admin, connexion PostgreSQL,
+  # dashboard métier) au lieu de l'assistant web — Metabase n'a pas de
+  # mécanisme de provisioning par fichiers comme Grafana, ce petit service
+  # rejoue ce rôle une fois metabase démarré. Idempotent (no-op si déjà fait,
+  # ex. après un simple redémarrage grâce à metabase_data).
+  metabase-bootstrap:
+    build: ./monitoring/metabase
+    container_name: tp2_metabase_bootstrap
+    depends_on:
+      metabase:
+        condition: service_started
     networks: [tp2]
 
 networks:
@@ -231,3 +252,4 @@ volumes:
   producer_state:
   prometheus_data:
   grafana_data:
+  metabase_data:

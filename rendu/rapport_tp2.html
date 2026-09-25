@@ -280,6 +280,8 @@ reproduire</a></li>
 vérifier</a></li>
 <li><a href="#ports-exposés" id="toc-ports-exposés">Ports
 exposés</a></li>
+<li><a href="#limites-connues" id="toc-limites-connues">Limites
+connues</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -410,10 +412,13 @@ producteur, PostgreSQL, CPU/mémoire).</p>
 <h1 id="data-visualization">6. Data visualization</h1>
 <p>Outil dédié, distinct de Grafana (consigne du formateur) : Metabase,
 connecté à PostgreSQL — répartition des étiquettes DPE, communes les
-plus chères, part F-G par tranche de prix. Premier accès sur
-<code>:3001</code> : assistant de configuration Metabase, seule étape
-manuelle du projet (propre à l’outil, qui ne permet pas de provisionner
-ses dashboards comme du code).</p>
+plus chères, part F-G par tranche de prix. Metabase n’ayant pas de
+mécanisme de provisioning par fichiers comme Grafana, <a href="../monitoring/metabase/bootstrap.py">monitoring/metabase/bootstrap.py</a>
+configure compte admin, connexion PostgreSQL et dashboard par l’API REST
+de Metabase, exécuté automatiquement au démarrage
+(<code>admin@tp2.local</code> / <code>MetabaseTp2!2026</code> sur
+<code>:3001</code>) : aucune étape manuelle, y compris pour cet
+outil.</p>
 <h1 id="vérification">7. Vérification</h1>
 <p>Stack testée à froid
 (<code>docker compose down -v &amp;&amp; docker compose up -d</code>)
@@ -498,7 +503,8 @@ obligatoire (le backfill utilise les CSV déjà versionnés).</p>
 </tr>
 <tr>
 <td>Metabase</td>
-<td>http://localhost:3001</td>
+<td>http://localhost:3001 (<code>admin@tp2.local</code> /
+<code>MetabaseTp2!2026</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -546,6 +552,11 @@ docker-stats-exporter</td>
 </tr>
 </tbody>
 </table>
+<h2 id="limites-connues">Limites connues</h2>
+<p>Choix assumés, hors périmètre pour un TP sur une seule machine : data
+lake non partitionné par date, <code>ON CONFLICT DO NOTHING</code> (pas
+de mise à jour sur republication ADEME), Kafka mono-broker (réplication
+1), pas de limites CPU/mémoire par conteneur.</p>
 <script>
 (function () {
   var toc = document.getElementById('TOC');
