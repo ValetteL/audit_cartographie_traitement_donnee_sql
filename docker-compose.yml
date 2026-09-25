@@ -172,11 +172,18 @@ services:
       - "9090:9090"
     networks: [tp2]
 
+  # Sert à la fois l'observabilité (Prometheus) et la dataviz métier (PostgreSQL) :
+  # le sujet ne demande pas d'outil de dataviz nommé, seulement "un dashboard" —
+  # ajouter un second outil (Metabase) uniquement pour ça aurait dupliqué un
+  # besoin déjà couvert, sans rien automatiser de plus (son dashboard business se
+  # construit à la main dans son UI, contrairement à Grafana qui se provisionne
+  # entièrement comme du code, sans étape manuelle).
   grafana:
     image: grafana/grafana:11.2.0
     container_name: tp2_grafana
     depends_on:
       - prometheus
+      - db
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
@@ -187,19 +194,6 @@ services:
       - grafana_data:/var/lib/grafana
     ports:
       - "3000:3000"
-    networks: [tp2]
-
-  # --- Data Visualization (usage métier, distinct de Grafana = observabilité technique) ---
-  metabase:
-    image: metabase/metabase:v0.51.4
-    container_name: tp2_metabase
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      MB_DB_TYPE: h2
-    ports:
-      - "3001:3000"
     networks: [tp2]
 
 networks:

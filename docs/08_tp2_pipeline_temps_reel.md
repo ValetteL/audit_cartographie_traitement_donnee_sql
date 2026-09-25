@@ -28,9 +28,9 @@ Prolonge le TP1 (base PostgreSQL statique, département 44) avec un pipeline tem
                                                                     ▼
                                                     PostgreSQL : diagnostic_dpe_flux
                                                                     │
-                                              ┌─────────────────────┴───────────────────┐
-                                              ▼                                          ▼
-                                        Metabase (dataviz métier)          Prometheus + Grafana (observabilité)
+                                                                    ▼
+                                          Grafana (2 dashboards provisionnés : observabilité + dataviz métier)
+                                          datasources : Prometheus (métriques) + PostgreSQL (données métier)
 ```
 
 ## Sources
@@ -88,7 +88,7 @@ Dashboard Grafana provisionné automatiquement (aucune étape manuelle) : [monit
 
 ## Data visualization
 
-Metabase, connecté à la même base PostgreSQL — distinct de Grafana, qui reste dédié à l'observabilité technique. Metabase permet de construire des dashboards métier directement sur `diagnostic_dpe_flux` et sur les tables du TP1 (ex. répartition des étiquettes DPE reçues en temps réel par commune).
+Le sujet demande un dashboard de data visualization sans imposer d'outil. Plutôt qu'un second outil dédié (ex. Metabase), la dataviz métier est un second dashboard Grafana ([monitoring/grafana/provisioning/dashboards/tp2_metier.json](../monitoring/grafana/provisioning/dashboards/tp2_metier.json)), branché sur un second datasource PostgreSQL (en plus du datasource Prometheus utilisé pour l'observabilité) : répartition des étiquettes DPE reçues, origine backfill/live, volume traité dans le temps, communes les plus chères, part de logements F-G par tranche de prix, derniers DPE reçus. Provisionné au même titre que le dashboard technique — pas d'étape manuelle, alors qu'un outil séparé (Metabase notamment) demande de construire son dashboard à la main dans son UI au premier lancement.
 
 ## Comment reproduire
 
@@ -106,8 +106,7 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | Data lake | `docker exec tp2_aggregator sh -c "wc -l /datalake/raw/api/dpe_raw.ndjson /datalake/aggregated/dpe_enrichi.ndjson"` |
 | PostgreSQL (flux) | `docker exec tp_audit_44_pg psql -U postgres -d audit_immo_energie_44 -c "SELECT COUNT(*) FROM diagnostic_dpe_flux;"` |
 | Prometheus | http://localhost:9090/targets — les 5 cibles (cadvisor, postgres, api-producer, aggregator, spark) doivent être `UP` |
-| Grafana | http://localhost:3000 (admin/admin, ou accès anonyme activé) — dashboard *TP2 — Pipeline temps réel* provisionné automatiquement |
-| Metabase | http://localhost:3001 — premier accès : assistant de configuration Metabase, se connecter à la base `db:5432/audit_immo_energie_44` (postgres/postgres) |
+| Grafana | http://localhost:3000 (admin/admin, ou accès anonyme activé) — dashboards *TP2 — Pipeline temps réel* (observabilité) et *TP2 — Dataviz métier* provisionnés automatiquement, ainsi que les datasources Prometheus et PostgreSQL |
 | Métriques brutes | http://localhost:8001/metrics (producteur), http://localhost:8002/metrics (agrégateur), http://localhost:8003/metrics (Spark) |
 
 ## Ports exposés
@@ -121,4 +120,3 @@ Démarre l'ensemble (TP1 + TP2) : base PostgreSQL et son import TP1, data lake, 
 | 9187 | postgres-exporter |
 | 9090 | Prometheus |
 | 3000 | Grafana |
-| 3001 | Metabase |

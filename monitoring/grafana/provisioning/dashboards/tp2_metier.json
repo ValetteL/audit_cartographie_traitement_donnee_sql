@@ -1,0 +1,97 @@
+{
+  "title": "TP2 — Dataviz métier (DPE & marché immobilier)",
+  "uid": "tp2-metier",
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Répartition des étiquettes DPE reçues (flux temps réel)",
+      "type": "piechart",
+      "gridPos": { "h": 9, "w": 8, "x": 0, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT etiquette_dpe AS metric, COUNT(*) AS value FROM diagnostic_dpe_flux GROUP BY etiquette_dpe ORDER BY etiquette_dpe",
+          "format": "table",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Origine des DPE reçus (backfill vs live)",
+      "type": "piechart",
+      "gridPos": { "h": 9, "w": 8, "x": 8, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT source_flux AS metric, COUNT(*) AS value FROM diagnostic_dpe_flux GROUP BY source_flux",
+          "format": "table",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Volume de DPE traités dans le temps",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT date_trunc('minute', traite_le) AS time, COUNT(*) AS value FROM diagnostic_dpe_flux GROUP BY 1 ORDER BY 1",
+          "format": "time_series",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "10 communes les plus chères (prix moyen €/m², flux temps réel)",
+      "type": "bargauge",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "fieldConfig": { "defaults": { "unit": "currencyEUR" }, "overrides": [] },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT c.nom_commune AS metric, MAX(f.prix_m2_commune_reference) AS value FROM diagnostic_dpe_flux f JOIN commune c ON c.code_insee = f.code_insee WHERE f.prix_m2_commune_reference IS NOT NULL GROUP BY c.nom_commune ORDER BY value DESC LIMIT 10",
+          "format": "table",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Part de logements F-G par tranche de prix communal",
+      "type": "barchart",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "fieldConfig": { "defaults": { "unit": "percent" }, "overrides": [] },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT CASE WHEN prix_m2_commune_reference < 2000 THEN '< 2000€/m²' WHEN prix_m2_commune_reference < 3000 THEN '2000-3000€/m²' WHEN prix_m2_commune_reference < 4000 THEN '3000-4000€/m²' ELSE '>= 4000€/m²' END AS metric, 100.0 * SUM(CASE WHEN etiquette_dpe IN ('F','G') THEN 1 ELSE 0 END) / COUNT(*) AS value FROM diagnostic_dpe_flux WHERE prix_m2_commune_reference IS NOT NULL GROUP BY 1 ORDER BY 1",
+          "format": "table",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Derniers DPE reçus",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 18 },
+      "datasource": { "type": "postgres", "uid": "PostgreSQL" },
+      "targets": [
+        {
+          "rawSql": "SELECT f.numero_dpe, c.nom_commune, f.etiquette_dpe, f.etiquette_ges, f.surface_habitable_logement, f.prix_m2_commune_reference, f.source_flux, f.traite_le FROM diagnostic_dpe_flux f JOIN commune c ON c.code_insee = f.code_insee ORDER BY f.traite_le DESC LIMIT 50",
+          "format": "table",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}
