@@ -41,8 +41,7 @@ sql/             scripts DDL, import, requêtes de vérification et d'analyse (T
 rendu/           rapports finaux assemblés (PDF et HTML) — les documents à soumettre (TP1 + TP2)
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
-aggregation/     agrégateur Kafka → data lake (TP2)
-spark/           nettoyage PySpark → PostgreSQL (TP2)
+spark/           Spark Structured Streaming : consomme Kafka, data lake, nettoyage, PostgreSQL (TP2)
 monitoring/      configuration Prometheus et Grafana (TP2)
 docker-compose.yml   stack complète prête à l'emploi (voir Démarrage rapide)
 ```

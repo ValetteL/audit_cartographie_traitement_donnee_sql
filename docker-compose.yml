@@ -94,22 +94,6 @@ services:
       - producer_state:/state
     networks: [tp2]
 
-  aggregator:
-    build: ./aggregation
-    container_name: tp2_aggregator
-    depends_on:
-      kafka:
-        condition: service_healthy
-      source2-loader:
-        condition: service_completed_successfully
-    environment:
-      KAFKA_BOOTSTRAP: kafka:19092
-    ports:
-      - "8002:8000"   # métriques Prometheus
-    volumes:
-      - datalake_data:/datalake
-    networks: [tp2]
-
   # PostgreSQL n'exécute les scripts de docker-entrypoint-initdb.d/ (dont
   # sql/06_create_flux_table.sql) qu'à la toute première initialisation d'un
   # volume vide. Sur un volume déjà initialisé par le TP1 (avant l'existence
@@ -135,19 +119,26 @@ services:
       echo 'en attente de PostgreSQL...'; sleep 2; done"
     networks: [tp2]
 
+  # Consomme directement Kafka (Spark Structured Streaming, checkpointing natif)
+  # plutôt qu'un consommateur Kafka fait main séparé : fusionne ce qui était
+  # avant deux composants (aggregator + spark) en un seul, avec une vraie
+  # reprise sur erreur gérée par Spark au lieu d'un consumer group manuel.
   spark:
     build: ./spark
     container_name: tp2_spark
     depends_on:
       flux-table-init:
         condition: service_completed_successfully
-      aggregator:
-        condition: service_started
+      source2-loader:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_healthy
     environment:
       PG_HOST: db
+      KAFKA_BOOTSTRAP: kafka:19092
       SPARK_INTERVAL_SECONDS: "60"
     ports:
-      - "8003:8000"   # métriques Prometheus
+      - "8003:8000"   # métriques Prometheus (raw_records_total + clean_records_total)
     volumes:
       - datalake_data:/datalake
     networks: [tp2]
@@ -188,7 +179,6 @@ services:
       - postgres-exporter
       - cadvisor
       - api-producer
-      - aggregator
       - spark
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
