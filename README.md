@@ -20,21 +20,28 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 6. [06_base_postgresql.md](docs/06_base_postgresql.md) — base PostgreSQL : scripts et résultats de vérification
 7. [07_cartographie_globale.md](docs/07_cartographie_globale.md) — vue d'ensemble du cheminement
 
+**TP2 — Pipeline data temps réel & plateforme data** (prolonge le TP1) : [08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) — architecture, sources, data lake, nettoyage PySpark, observabilité Prometheus/Grafana, dataviz, comment vérifier.
+
 ## Démarrage rapide
 
 ```bash
 docker compose up -d
 ```
 
-Crée la base PostgreSQL, les tables et importe les données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics) — sans étape manuelle ni accès réseau, les CSV nettoyés sont versionnés dans `data/staging/`. Détails et méthode alternative sans docker compose : [docs/06_base_postgresql.md](docs/06_base_postgresql.md).
+Démarre l'ensemble TP1 + TP2 : base PostgreSQL avec import des données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics), et le pipeline temps réel (Kafka, data lake, PySpark, PostgreSQL, Prometheus/Grafana, Metabase) — sans étape manuelle ni accès réseau obligatoire, les CSV nettoyés sont versionnés dans `data/staging/`. Détails : [docs/06_base_postgresql.md](docs/06_base_postgresql.md) (TP1) et [docs/08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) (TP2, avec les commandes de vérification).
 
 ## Structure du dépôt
 
 ```
-docs/            documentation de chaque livrable
+docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08)
 data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
 scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
-sql/             scripts DDL, import, requêtes de vérification et d'analyse
-rendu/           rapport final assemblé (PDF et HTML) — le document à soumettre
-docker-compose.yml   base PostgreSQL prête à l'emploi (voir Démarrage rapide)
+sql/             scripts DDL, import, requêtes de vérification et d'analyse (TP1 + TP2)
+rendu/           rapport final assemblé (PDF et HTML) — le document à soumettre (TP1)
+api/             producteur Kafka — Source 1 (DPE, TP2)
+source2/         chargeur DVF — Source 2 complémentaire (TP2)
+aggregation/     agrégateur Kafka → data lake (TP2)
+spark/           nettoyage PySpark → PostgreSQL (TP2)
+monitoring/      configuration Prometheus et Grafana (TP2)
+docker-compose.yml   stack complète prête à l'emploi (voir Démarrage rapide)
 ```

@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  # Infra conteneurs (CPU/mémoire/réseau par service) — remplace node-exporter,
+  # explicitement écarté du périmètre : cadvisor couvre déjà l'infra Docker du TP.
+  - job_name: cadvisor
+    static_configs:
+      - targets: ["cadvisor:8080"]
+
+  # PostgreSQL (tables TP1 + flux temps réel TP2)
+  - job_name: postgres
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  # Pipeline applicatif — chaque étape expose ses propres métriques métier
+  - job_name: api-producer
+    static_configs:
+      - targets: ["api-producer:8000"]
+
+  - job_name: aggregator
+    static_configs:
+      - targets: ["aggregator:8000"]
+
+  - job_name: spark
+    static_configs:
+      - targets: ["spark:8000"]

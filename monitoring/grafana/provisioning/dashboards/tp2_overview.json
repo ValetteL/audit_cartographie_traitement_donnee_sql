@@ -1,0 +1,90 @@
+{
+  "title": "TP2 — Pipeline temps réel",
+  "uid": "tp2-overview",
+  "timezone": "browser",
+  "refresh": "10s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Raw vs Clean — volume de données",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 0 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
+      "targets": [
+        { "expr": "raw_records_total", "legendFormat": "Raw (Data Lake — aggregator)", "refId": "A" },
+        { "expr": "clean_records_total", "legendFormat": "Clean (PostgreSQL — spark)", "refId": "B" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Taux de nettoyage (Clean / Raw)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 9 },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [
+        { "expr": "clean_records_total / raw_records_total", "refId": "A" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Événements publiés par le producteur (par source)",
+      "type": "timeseries",
+      "gridPos": { "h": 6, "w": 18, "x": 6, "y": 9 },
+      "targets": [
+        { "expr": "sum by (source_flux) (producer_events_published_total)", "legendFormat": "{{source_flux}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "PostgreSQL — connexions actives",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 15 },
+      "targets": [
+        { "expr": "pg_stat_database_numbackends{datname=\"audit_immo_energie_44\"}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "PostgreSQL — disponibilité",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 15 },
+      "fieldConfig": { "defaults": { "mappings": [{ "type": "value", "options": { "0": { "text": "DOWN" }, "1": { "text": "UP" } } }] }, "overrides": [] },
+      "targets": [
+        { "expr": "pg_up", "refId": "A" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "PostgreSQL — taille de la base",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 15 },
+      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+      "targets": [
+        { "expr": "pg_database_size_bytes{datname=\"audit_immo_energie_44\"}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Conteneurs — usage CPU",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
+      "targets": [
+        { "expr": "sum by (name) (rate(container_cpu_usage_seconds_total{name=~\"tp2_.*|tp_audit_44_pg\"}[1m]))", "legendFormat": "{{name}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Conteneurs — usage mémoire",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
+      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+      "targets": [
+        { "expr": "container_memory_usage_bytes{name=~\"tp2_.*|tp_audit_44_pg\"}", "legendFormat": "{{name}}", "refId": "A" }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}
