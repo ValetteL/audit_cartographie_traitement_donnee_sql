@@ -2,6 +2,8 @@
 
 Audit de qualité sur les 4 tables produites par le TP1 et le TP2, correction des anomalies confirmées, recontrôle. Prolonge le TP1/TP2 : mêmes tables, même base.
 
+**Décision de périmètre — audit ponctuel** : `diagnostic_dpe_flux` est alimentée en continu par le pipeline temps réel du TP2 (Kafka/Spark), pas importée une fois comme les 3 autres tables. Cet audit prend une photo à un instant T et corrige ce qui existe déjà, sans modifier le job Spark ni garantir que les futures lignes du flux respectent les mêmes règles — cf. [Limites connues](08_tp2_pipeline_temps_reel.md#limites-connues) du TP2, où intégrer ces contrôles au job de nettoyage est identifié comme piste d'amélioration, pas comme un manque de ce TP3.
+
 ## Cartographie et schéma cible
 
 Le schéma cible (4 tables : `commune`, `transaction_dvf`, `diagnostic_dpe`, `diagnostic_dpe_flux`) est vérifié et à jour dans [05_modele_logique.md](05_modele_logique.md) et [07_cartographie_globale.md](07_cartographie_globale.md) — `diagnostic_dpe_flux` (ajoutée en TP2) y manquait, corrigé à l'occasion de ce TP3.

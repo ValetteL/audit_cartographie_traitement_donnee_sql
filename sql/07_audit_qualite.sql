@@ -106,10 +106,11 @@ ORDER BY annee_construction;
 -- : diviser valeur_fonciere par la surface d'une seule ligne d'une mutation
 -- multi-lots produit des prix au m² absurdes — l'agrégation par id_mutation
 -- est indispensable avant tout contrôle de cohérence sur le prix).
--- Borne de 15 000 €/m² : trois fois le 99e percentile observé sur l'ensemble
--- du jeu de données (~8 800 €/m², cf. calcul dans le rapport) — large marge
--- pour ne pas flaguer le marché haut de gamme légitime (littoral, centre de
--- Nantes), tout en isolant les cas manifestement disproportionnés.
+-- Borne de 15 000 €/m² : environ 1,7 fois le 99e percentile observé sur
+-- l'ensemble du jeu de données (~8 800 €/m², cf. docs/09_tp3_audit_qualite.md)
+-- — large marge pour ne pas flaguer le marché haut de gamme légitime
+-- (littoral, centre de Nantes), tout en isolant les cas manifestement
+-- disproportionnés.
 WITH mutation AS (
     SELECT id_mutation, MAX(valeur_fonciere) AS valeur_fonciere,
            SUM(surface_reelle_bati) AS surface_totale, MAX(code_insee) AS code_insee

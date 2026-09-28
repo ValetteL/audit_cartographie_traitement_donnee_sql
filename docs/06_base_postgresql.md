@@ -22,6 +22,8 @@ docker compose up -d
 
 Sous le capot : le service `db` (`docker-compose.yml`) monte `sql/01_create_tables.sql` et `sql/03_import_donnees_reelles.sql` dans `/docker-entrypoint-initdb.d/`, exécutés automatiquement par l'image `postgres:16` à son premier démarrage, avec `data/staging/` monté au même chemin relatif que celui utilisé par le script d'import. Les CSV nettoyés (`data/staging/`) sont versionnés dans le dépôt : aucun accès réseau requis. Pour repartir d'une base vide : `docker compose down -v`.
 
+Deux scripts supplémentaires sont montés dans le même dossier, ajoutés lors des TP suivants sans rien changer à ce principe : `sql/06_create_flux_table.sql` (table `diagnostic_dpe_flux`, TP2 — cf. [08_tp2_pipeline_temps_reel.md](08_tp2_pipeline_temps_reel.md)) et `sql/08_nettoyage.sql` (corrections d'audit qualité, TP3 — cf. [09_tp3_audit_qualite.md](09_tp3_audit_qualite.md)).
+
 **Sans docker compose** (accès plus fin, ex. pour charger les données de test à la place) :
 
 ```bash

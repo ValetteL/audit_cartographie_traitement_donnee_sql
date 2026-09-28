@@ -8,7 +8,7 @@ Croisement de trois sources ouvertes (DVF, DPE ADEME, COG INSEE) pour passer de 
 
 - TP1 : [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html))
 - TP2 : [rendu/rapport_tp2.pdf](rendu/rapport_tp2.pdf) (version HTML autonome : [rendu/rapport_tp2.html](rendu/rapport_tp2.html))
-- TP3 : rendu à part (synthèse orale + mise en forme prises en charge hors de ce dépôt) — documentation technique complète dans [docs/09_tp3_audit_qualite.md](docs/09_tp3_audit_qualite.md)
+- TP3 : documentation technique dans [docs/09_tp3_audit_qualite.md](docs/09_tp3_audit_qualite.md) ; support de soutenance orale : [Soutenance TP3 — Audit qualité.pdf](<Soutenance TP3 — Audit qualité.pdf>) et [notes.md](notes.md) (script détaillé, minuté, par diapositive)
 
 ## Livrables
 
@@ -40,11 +40,12 @@ Démarre l'ensemble TP1 + TP2 + TP3 : base PostgreSQL avec import des données r
 docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08, TP3 : 09)
 data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
 scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
-sql/             scripts DDL, import, requêtes de vérification/analyse (TP1), Kafka (TP2), audit/nettoyage (TP3)
-rendu/           rapports finaux assemblés — les documents à soumettre (TP1, TP2 ; TP3 pris en charge hors dépôt)
+sql/             scripts DDL, import, requêtes de vérification/analyse (TP1), table flux temps réel (TP2), audit/nettoyage (TP3)
+rendu/           rapports finaux assemblés — les documents à soumettre (TP1, TP2)
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
 spark/           Spark Structured Streaming : consomme Kafka, data lake, nettoyage, PostgreSQL (TP2)
 monitoring/      Prometheus, Grafana (monitoring), docker-stats-exporter et Metabase (dataviz, TP2)
 docker-compose.yml   stack complète prête à l'emploi (voir Démarrage rapide)
+notes.md, Soutenance TP3 — Audit qualité.pdf   support et script de la soutenance orale (TP3)
 ```

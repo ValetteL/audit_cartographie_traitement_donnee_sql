@@ -5,15 +5,17 @@
 - **COMMUNE** — référentiel géographique (COG), restreint au département 44 (207 communes).
 - **TRANSACTION** — une transaction immobilière (mutation DVF), rattachée à une commune.
 - **DIAGNOSTIC_DPE** — un diagnostic de performance énergétique, rattaché à une commune.
+- **DIAGNOSTIC_DPE_FLUX** — même nature que DIAGNOSTIC_DPE, alimentée en continu par le pipeline temps réel du TP2 plutôt qu'importée une fois ; ajoutée au modèle à cette occasion (absente du diagramme dbdiagram.io ci-dessous, réalisé avant le TP2 — cf. [05_modele_logique.md](05_modele_logique.md) pour son schéma logique à jour).
 
 ## Relations et cardinalités
 
 ```
 COMMUNE 1 ───── N TRANSACTION
 COMMUNE 1 ───── N DIAGNOSTIC_DPE
+COMMUNE 1 ───── N DIAGNOSTIC_DPE_FLUX
 ```
 
-Une **commune** est concernée par **0 à N transactions** et **0 à N diagnostics DPE** ; chaque **transaction** et chaque **diagnostic** appartient à **exactement 1 commune**.
+Une **commune** est concernée par **0 à N transactions**, **0 à N diagnostics DPE** et **0 à N lignes du flux temps réel** ; chaque **transaction** et chaque **diagnostic** (statique ou temps réel) appartient à **exactement 1 commune**. Même justification de rattachement que DIAGNOSTIC_DPE ci-dessous — DIAGNOSTIC_DPE_FLUX en hérite sans changement de logique.
 
 ## Justification des choix
 

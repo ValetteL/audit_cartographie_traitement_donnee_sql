@@ -102,3 +102,4 @@ Choix assumés, hors périmètre pour un TP tournant sur une seule machine :
 - **`ON CONFLICT DO NOTHING`** : une correction ultérieure d'un DPE déjà inséré (republication côté ADEME) ne serait pas répercutée en base.
 - **Kafka mono-broker** (réplication 1) : pas de tolérance de panne si le broker crashe avec des données non flushées.
 - **Pas de limites CPU/mémoire** sur les conteneurs.
+- **Contrôles qualité non intégrés au job Spark** : l'audit du TP3 ([09_tp3_audit_qualite.md](09_tp3_audit_qualite.md)) corrige `diagnostic_dpe_flux` à un instant T, mais le flux continue d'arriver sans être filtré par les mêmes règles ensuite. Intégrer ces contrôles directement dans `spark/jobs/clean_and_load.py` serait la suite logique, hors périmètre choisi pour le TP3 (audit ponctuel plutôt que renforcement du pipeline, cf. décision documentée dans le TP3).

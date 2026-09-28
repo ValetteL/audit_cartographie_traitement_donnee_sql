@@ -172,4 +172,21 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Chaque étape vérifie l'état avant d'agir (has-user-setup, base déjà
+    # connectée, dashboard déjà présent) : le script est donc idempotent et
+    # reprend correctement là où il s'était arrêté. Utile car /api/setup peut
+    # renvoyer une erreur transitoire (ex. connexion à `db` pas encore prête,
+    # côté Metabase, malgré son propre /api/health déjà "ok") tout en ayant
+    # déjà créé le compte admin côté serveur — un simple retry détecte cet
+    # état partiel et termine la configuration plutôt que de repartir de zéro.
+    last_error = None
+    for attempt in range(10):
+        try:
+            main()
+            break
+        except Exception as e:
+            last_error = e
+            print(f"[bootstrap] tentative {attempt + 1}/10 échouée ({e}), nouvel essai...")
+            time.sleep(5)
+    else:
+        raise last_error or RuntimeError("échec du bootstrap Metabase")
