@@ -14,6 +14,11 @@ services:
       - ./sql/01_create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql:ro
       - ./sql/03_import_donnees_reelles.sql:/docker-entrypoint-initdb.d/02_import_donnees_reelles.sql:ro
       - ./sql/06_create_flux_table.sql:/docker-entrypoint-initdb.d/03_create_flux_table.sql:ro
+      # TP3 : corrections d'audit qualité, appliquées automatiquement juste
+      # après l'import (diagnostic_dpe_flux existe déjà, encore vide à ce
+      # stade — la correction qui la concerne n'a donc d'effet qu'en la
+      # rejouant plus tard, cf. docs/09_tp3_audit_qualite.md).
+      - ./sql/08_nettoyage.sql:/docker-entrypoint-initdb.d/04_nettoyage.sql:ro
       # Monté au même chemin relatif que celui utilisé par le script d'import
       # (data/staging/...), pour qu'il fonctionne sans modification.
       - ./data/staging:/data/staging:ro

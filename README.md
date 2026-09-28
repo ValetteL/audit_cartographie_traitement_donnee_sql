@@ -8,7 +8,7 @@ Croisement de trois sources ouvertes (DVF, DPE ADEME, COG INSEE) pour passer de 
 
 - TP1 : [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html))
 - TP2 : [rendu/rapport_tp2.pdf](rendu/rapport_tp2.pdf) (version HTML autonome : [rendu/rapport_tp2.html](rendu/rapport_tp2.html))
-- TP3 : [rendu/rapport_tp3.pdf](rendu/rapport_tp3.pdf)
+- TP3 : rendu à part (synthèse orale + mise en forme prises en charge hors de ce dépôt) — documentation technique complète dans [docs/09_tp3_audit_qualite.md](docs/09_tp3_audit_qualite.md)
 
 ## Livrables
 
@@ -32,7 +32,7 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 docker compose up -d
 ```
 
-Démarre l'ensemble TP1 + TP2 : base PostgreSQL avec import des données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics), et le pipeline temps réel (Kafka, data lake, PySpark, PostgreSQL, Prometheus/Grafana pour le monitoring, Metabase pour la dataviz métier) — sans étape manuelle ni accès réseau obligatoire, les CSV nettoyés sont versionnés dans `data/staging/`. Metabase (compte admin, connexion, dashboard) est aussi configuré automatiquement (`admin@tp2.local` / `MetabaseTp2!2026`). Détails : [docs/06_base_postgresql.md](docs/06_base_postgresql.md) (TP1) et [docs/08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) (TP2, avec les commandes de vérification).
+Démarre l'ensemble TP1 + TP2 + TP3 : base PostgreSQL avec import des données réelles du département 44 (207 communes, 79 315 transactions, 351 959 diagnostics), corrections d'audit qualité du TP3 déjà appliquées, et le pipeline temps réel (Kafka, data lake, PySpark, PostgreSQL, Prometheus/Grafana pour le monitoring, Metabase pour la dataviz métier) — sans étape manuelle ni accès réseau obligatoire, les CSV nettoyés sont versionnés dans `data/staging/`. Metabase (compte admin, connexion, dashboard) est aussi configuré automatiquement (`admin@tp2.local` / `MetabaseTp2!2026`). Détails : [docs/06_base_postgresql.md](docs/06_base_postgresql.md) (TP1), [docs/08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) (TP2, avec les commandes de vérification), [docs/09_tp3_audit_qualite.md](docs/09_tp3_audit_qualite.md) (TP3, audit et corrections).
 
 ## Structure du dépôt
 
@@ -41,7 +41,7 @@ docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08, TP3 : 
 data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
 scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
 sql/             scripts DDL, import, requêtes de vérification/analyse (TP1), Kafka (TP2), audit/nettoyage (TP3)
-rendu/           rapports finaux assemblés — les documents à soumettre (TP1, TP2, TP3)
+rendu/           rapports finaux assemblés — les documents à soumettre (TP1, TP2 ; TP3 pris en charge hors dépôt)
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
 spark/           Spark Structured Streaming : consomme Kafka, data lake, nettoyage, PostgreSQL (TP2)
