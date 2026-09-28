@@ -8,6 +8,7 @@ Croisement de trois sources ouvertes (DVF, DPE ADEME, COG INSEE) pour passer de 
 
 - TP1 : [rendu/rapport_tp.pdf](rendu/rapport_tp.pdf) (version HTML autonome : [rendu/rapport_tp.html](rendu/rapport_tp.html))
 - TP2 : [rendu/rapport_tp2.pdf](rendu/rapport_tp2.pdf) (version HTML autonome : [rendu/rapport_tp2.html](rendu/rapport_tp2.html))
+- TP3 : [rendu/rapport_tp3.pdf](rendu/rapport_tp3.pdf)
 
 ## Livrables
 
@@ -23,6 +24,8 @@ Chaque livrable du TP est documenté dans [docs/](docs/) :
 
 **TP2 — Pipeline data temps réel & plateforme data** (prolonge le TP1) : [08_tp2_pipeline_temps_reel.md](docs/08_tp2_pipeline_temps_reel.md) — architecture, sources, data lake, nettoyage PySpark, observabilité Prometheus/Grafana, dataviz, comment vérifier.
 
+**TP3 — Audit qualité & nettoyage des données** (prolonge le TP1/TP2) : [09_tp3_audit_qualite.md](docs/09_tp3_audit_qualite.md) — schéma cible vérifié, matrice de contrôles qualité, méthodologie, anomalies identifiées et corrigées, recontrôle avant/après.
+
 ## Démarrage rapide
 
 ```bash
@@ -34,11 +37,11 @@ Démarre l'ensemble TP1 + TP2 : base PostgreSQL avec import des données réelle
 ## Structure du dépôt
 
 ```
-docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08)
+docs/            documentation de chaque livrable (TP1 : 01-07, TP2 : 08, TP3 : 09)
 data/            extraits bruts (non versionnés) et data/staging/ (nettoyés, versionnés)
 scripts/         téléchargement et nettoyage des sources, pour régénérer data/staging/
-sql/             scripts DDL, import, requêtes de vérification et d'analyse (TP1 + TP2)
-rendu/           rapports finaux assemblés (PDF et HTML) — les documents à soumettre (TP1 + TP2)
+sql/             scripts DDL, import, requêtes de vérification/analyse (TP1), Kafka (TP2), audit/nettoyage (TP3)
+rendu/           rapports finaux assemblés — les documents à soumettre (TP1, TP2, TP3)
 api/             producteur Kafka — Source 1 (DPE, TP2)
 source2/         chargeur DVF — Source 2 complémentaire (TP2)
 spark/           Spark Structured Streaming : consomme Kafka, data lake, nettoyage, PostgreSQL (TP2)
